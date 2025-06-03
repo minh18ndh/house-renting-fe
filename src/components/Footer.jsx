@@ -1,0 +1,50 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Footer = () => {
+  return (
+    <footer className="bg-text-main text-white">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center space-x-2 mb-4">
+              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-lg">R</span>
+              </div>
+              <span className="font-bold text-xl">RentAHouse</span>
+            </div>
+            <p className="text-sm text-gray-400">Find your next home with us. Discover amazing properties in your area.</p>
+          </div>
+          <div>
+            <h5 className="font-semibold mb-3">Quick Links</h5>
+            <ul className="space-y-2">
+              <li><Link to="/" className="hover:text-primary text-sm transition-colors">Home</Link></li>
+              <li><Link to="/search" className="hover:text-primary text-sm transition-colors">Search Properties</Link></li>
+              <li><Link to="/about" className="hover:text-primary text-sm transition-colors">About Us</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold mb-3">Support</h5>
+            <ul className="space-y-2">
+              <li><Link to="/help" className="hover:text-primary text-sm transition-colors">Help Center</Link></li>
+              <li><Link to="/contact" className="hover:text-primary text-sm transition-colors">Contact Us</Link></li>
+              <li><Link to="/faq" className="hover:text-primary text-sm transition-colors">FAQ</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="font-semibold mb-3">Contact</h5>
+            <p className="text-sm text-gray-400">123 Property Lane</p>
+            <p className="text-sm text-gray-400">Cityville, ST 12345</p>
+            <p className="text-sm text-gray-400">contact@rentahouse.com</p>
+            <p className="text-sm text-gray-400">(555) 123-4567</p>
+          </div>
+        </div>
+        <div className="mt-8 border-t border-gray-700 pt-8 text-center">
+          <p className="text-sm text-gray-400">&copy; {new Date().getFullYear()} RentAHouse. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;
