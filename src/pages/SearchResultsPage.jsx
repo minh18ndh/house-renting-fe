@@ -38,7 +38,7 @@ const SearchResultsPage = () => {
     // Price range filter
     if (filters.priceRange !== '0') {
       const range = priceRanges[parseInt(filters.priceRange)];
-      filtered = filtered.filter(house => 
+      filtered = filtered.filter(house =>
         house.price >= range.min && house.price <= range.max
       );
     }
@@ -53,7 +53,7 @@ const SearchResultsPage = () => {
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-    
+
     // Update URL params
     const params = new URLSearchParams();
     if (newFilters.location) params.set('location', newFilters.location);
@@ -89,7 +89,7 @@ const SearchResultsPage = () => {
         </p>
       </div>
 
-      <SearchFilters 
+      <SearchFilters
         filters={filters}
         onFilterChange={handleFilterChange}
         onSearch={filterHouses}
@@ -105,11 +105,11 @@ const SearchResultsPage = () => {
               Discover properties in your preferred locations. Click on any marker to see property details and get a better sense of the neighborhood.
             </p>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-              <MapComponent 
-                houses={featuredHouses} 
+              <MapComponent
+                houses={featuredHouses}
                 onHouseSelect={handleHouseSelect}
                 selectedHouse={selectedHouse}
                 height="500px"
@@ -120,18 +120,17 @@ const SearchResultsPage = () => {
                 <h3 className="text-xl font-semibold text-text-main mb-4">Featured Properties</h3>
                 <div className="space-y-4">
                   {featuredHouses.map(house => (
-                    <div 
+                    <div
                       key={house.id}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                        selectedHouse?.id === house.id 
-                          ? 'border-primary bg-primary/5' 
+                      className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedHouse?.id === house.id
+                          ? 'border-primary bg-primary/5'
                           : 'border-gray-200 hover:border-primary/50'
-                      }`}
+                        }`}
                       onClick={() => handleHouseSelect(house)}
                     >
                       <div className="flex space-x-3">
-                        <img 
-                          src={house.images?.[0] || '/placeholder.svg?width=80&height=60&text=House'} 
+                        <img
+                          src={house.images?.[0] || '/placeholder.svg?width=80&height=60&text=House'}
                           alt={house.address}
                           className="w-16 h-12 object-cover rounded"
                         />
@@ -183,8 +182,8 @@ const SearchResultsPage = () => {
           {showMap ? (
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <div className="lg:col-span-2">
-                <MapComponent 
-                  houses={filteredHouses} 
+                <MapComponent
+                  houses={filteredHouses}
                   onHouseSelect={handleHouseSelect}
                   selectedHouse={selectedHouse}
                   height="600px"
@@ -197,18 +196,17 @@ const SearchResultsPage = () => {
                   </h3>
                   <div className="space-y-4">
                     {filteredHouses.map(house => (
-                      <div 
+                      <div
                         key={house.id}
-                        className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                          selectedHouse?.id === house.id 
-                            ? 'border-primary bg-primary/5' 
+                        className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedHouse?.id === house.id
+                            ? 'border-primary bg-primary/5'
                             : 'border-gray-200 hover:border-primary/50'
-                        }`}
+                          }`}
                         onClick={() => handleHouseSelect(house)}
                       >
                         <div className="flex space-x-3">
-                          <img 
-                            src={house.images?.[0] || '/placeholder.svg?width=80&height=60&text=House'} 
+                          <img
+                            src={house.images?.[0] || '/placeholder.svg?width=80&height=60&text=House'}
                             alt={house.address}
                             className="w-16 h-12 object-cover rounded"
                           />

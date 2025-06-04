@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import apiFetch from '../utils/api';
+import { loginApi, signupApi, getMeApi } from '../apis/authApi';
 
 const AuthContext = createContext(null);
 
@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Auto login on page load if token exists
   useEffect(() => {
     const token = localStorage.getItem('rentahouse_token');
     if (!token) {
@@ -15,7 +14,7 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    apiFetch('/auth/me', { method: 'GET', token })
+    getMeApi()
       .then(setUser)
       .catch(() => {
         localStorage.removeItem('rentahouse_token');
@@ -26,14 +25,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const { token } = await apiFetch('/auth/login', {
-        method: 'POST',
-        body: { email, password },
-      });
-
+      const { token } = await loginApi(email, password);
       localStorage.setItem('rentahouse_token', token);
 
-      const userData = await apiFetch('/auth/me', { token });
+      const userData = await getMeApi();
       setUser(userData);
 
       return true;
@@ -45,21 +40,12 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, email, password, phone) => {
     try {
-      const { token } = await apiFetch('/auth/register', {
-        method: 'POST',
-        body: {
-          fullName: name,
-          email,
-          password,
-          phone,
-        },
-      });
-
+      const { token } = await signupApi(name, email, password, phone);
       localStorage.setItem('rentahouse_token', token);
 
       return true;
-    } catch (error) {
-      console.error('Signup failed:', error);
+    } catch (err) {
+      console.error('Signup failed:', err);
       return false;
     }
   };
