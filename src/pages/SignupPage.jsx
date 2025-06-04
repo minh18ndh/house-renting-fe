@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../components/Input';
@@ -7,33 +7,46 @@ import Button from '../components/Button';
 const SignupPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
   const { signup, isAuthenticated } = useAuth();
 
-  if (isAuthenticated) {
-    navigate('/profile', { replace: true });
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/profile', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (password !== confirmPassword) {
       setError("Passwords don't match.");
       return;
     }
+
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
+
+    if (!/^0\d{9,}$/.test(phone)) {
+      setError("Phone number must start with 0 and be at least 10 digits.");
+      return;
+    }
+
     setError('');
     setLoading(true);
-    const success = await signup(name, email, password);
+    const success = await signup(name, email, password, phone);
     setLoading(false);
+
     if (success) {
-      navigate('/profile');
+      navigate('/login');
     } else {
       setError('Failed to sign up. Please try again.');
     }
@@ -55,31 +68,43 @@ const SignupPage = () => {
             Join thousands of users finding their perfect home
           </p>
         </div>
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && <p className="text-center text-sm text-red-600 bg-red-100 p-3 rounded-md">{error}</p>}
+          {error && (
+            <p className="text-center text-sm text-red-600 bg-red-100 p-3 rounded-md">
+              {error}
+            </p>
+          )}
+
           <Input
             label="Full Name"
             type="text"
             name="name"
-            placeholder="John Doe"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
           <Input
-            label="Email address"
+            label="Email Address"
             type="email"
             name="email"
-            placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            label="Phone Number"
+            type="tel"
+            name="phone"
+            placeholder="0123456789"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
             required
           />
           <Input
             label="Password"
             type="password"
             name="password"
-            placeholder="••••••••"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -88,17 +113,18 @@ const SignupPage = () => {
             label="Confirm Password"
             type="password"
             name="confirmPassword"
-            placeholder="••••••••"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
           />
+
           <div>
             <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-              {loading ? 'Creating account...' : 'Sign up'}
+              {loading ? 'Creating account…' : 'Sign up'}
             </Button>
           </div>
         </form>
+
         <p className="mt-4 text-center text-sm text-text-muted">
           Already have an account?{' '}
           <Link to="/login" className="font-medium text-primary hover:text-opacity-80">

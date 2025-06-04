@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import Input from '../components/Input';
@@ -15,9 +16,11 @@ const LoginPage = () => {
 
   const from = location.state?.from?.pathname || "/";
 
-  if (isAuthenticated) {
-    navigate(from, { replace: true });
-  }
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, [isAuthenticated, navigate, from]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -45,7 +48,7 @@ const LoginPage = () => {
             Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-text-muted">
-            Demo credentials: user@example.com / password
+            Demo credentials: minh@gmail.com / string123
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -54,7 +57,7 @@ const LoginPage = () => {
             label="Email address"
             type="email"
             name="email"
-            placeholder="you@example.com"
+            placeholder="minh@gmail.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -63,12 +66,12 @@ const LoginPage = () => {
             label="Password"
             type="password"
             name="password"
-            placeholder="••••••••"
+            placeholder="string123"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          
+
           <div>
             <Button type="submit" variant="primary" className="w-full" disabled={loading}>
               {loading ? 'Signing in...' : 'Sign in'}
