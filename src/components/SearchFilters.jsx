@@ -10,7 +10,7 @@ const SearchFilters = ({ filters, onFilterChange, onSearch, onReset }) => {
     <div className="bg-white p-6 rounded-lg shadow-lg">
       <h3 className="text-lg font-semibold text-text-main mb-4">Search Filters</h3>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
         {/* Property Type */}
         <div>
           <label className="block text-sm font-medium text-text-muted mb-1">Property Type</label>

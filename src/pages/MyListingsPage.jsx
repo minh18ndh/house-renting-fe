@@ -45,11 +45,8 @@ const MyListingsPage = () => {
           <h1 className="text-3xl font-bold text-text-main">My Listings</h1>
           <p className="text-text-muted mt-1">Manage your property listings</p>
         </div>
-        <Button variant="primary" onClick={() => alert('Add new listing feature coming soon!')}>
-          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-          </svg>
-          Add New Listing
+        <Button onClick={() => alert('Add new listing feature coming soon!')}>
+          + Add New Listing
         </Button>
       </div>
 
@@ -66,7 +63,6 @@ const MyListingsPage = () => {
         </div>
       ) : (
         <>
-          {/* Desktop Table View */}
           <div className="hidden lg:block bg-white shadow-lg rounded-lg overflow-hidden">
             <table className="min-w-full divide-y divide-border">
               <thead className="bg-gray-50">
@@ -134,68 +130,8 @@ const MyListingsPage = () => {
               </tbody>
             </table>
           </div>
-
-          {/* Mobile Card View */}
-          <div className="lg:hidden space-y-4">
-            {listings.map((listing) => (
-              <div key={listing.id} className="bg-white rounded-lg shadow-lg p-6">
-                <div className="flex items-start space-x-4">
-                  <img 
-                    src={listing.images?.[0] || '/placeholder.svg?width=80&height=60&text=House'} 
-                    alt={listing.address}
-                    className="w-20 h-16 object-cover rounded-lg"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg font-medium text-text-main truncate">{listing.address}</h3>
-                    <p className="text-sm text-text-muted">{listing.city}, {listing.state}</p>
-                    <p className="text-lg font-bold text-primary">${listing.price.toLocaleString()}/mo</p>
-                    <div className="flex items-center mt-2 space-x-4">
-                      <button
-                        onClick={() => handleToggleStatus(listing.id)}
-                        className={`px-2 py-1 text-xs font-semibold rounded-full ${
-                          listing.available 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}
-                      >
-                        {listing.available ? 'Active' : 'Inactive'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="mt-4 flex space-x-3">
-                  <Link to={`/house/${listing.id}`}>
-                    <Button variant="outline" size="sm">View</Button>
-                  </Link>
-                  <Button variant="ghost" size="sm" onClick={() => alert('Edit feature coming soon!')}>
-                    Edit
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={() => handleDeleteListing(listing.id)}
-                    className="text-red-600 hover:text-red-800"
-                  >
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            ))}
-          </div>
         </>
       )}
-      
-      {/* Floating Action Button */}
-      <button 
-        onClick={() => alert('Add new listing feature coming soon!')}
-        className="fixed bottom-8 right-8 bg-accent text-white p-4 rounded-full shadow-xl hover:bg-opacity-90 transition-all hover:scale-110 z-40"
-        title="Add New Listing"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <line x1="5" y1="12" x2="19" y2="12"></line>
-        </svg>
-      </button>
     </div>
   );
 };
