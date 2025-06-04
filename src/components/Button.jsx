@@ -1,12 +1,12 @@
 const Button = ({ children, onClick, type = 'button', variant = 'primary', className = '', disabled = false, size = 'md' }) => {
   const baseStyles = "rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
-  
+
   const sizes = {
     sm: "px-3 py-1.5 text-sm",
     md: "px-6 py-2.5",
     lg: "px-8 py-3 text-lg"
   };
-  
+
   const variants = {
     primary: "bg-primary text-white hover:bg-opacity-90 focus:ring-primary",
     secondary: "bg-accent text-white hover:bg-opacity-90 focus:ring-accent",

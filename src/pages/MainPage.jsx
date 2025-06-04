@@ -19,17 +19,17 @@ const MainPage = () => {
         <div className="container mx-auto px-4 text-center z-10">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">Find Your Dream Home</h1>
           <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Search through our listings to find the perfect place to (temporarily) call home. Your next adventure starts here.</p>
-            <div className="mt-4 text-center">
-              <Button 
-                type="button" 
-                variant="ghost" 
-                onClick={() => navigate('/search')}
-                className="text-text-main hover:text-primary animate-bounce"
-                size="sm"
-              >
-                Start searching for your dream home here!
-              </Button>
-            </div>
+          <div className="mt-4 text-center">
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => navigate('/search')}
+              className="text-text-main hover:text-primary animate-bounce"
+              size="sm"
+            >
+              Start searching for your dream home here!
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -37,8 +37,8 @@ const MainPage = () => {
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="mb-6">
-  <h2 className="text-2xl font-semibold text-text-main">Featured Projects</h2>
-</div>
+            <h2 className="text-2xl font-semibold text-text-main">Featured Listings</h2>
+          </div>
           <Swiper
             modules={[Autoplay]}
             spaceBetween={20}

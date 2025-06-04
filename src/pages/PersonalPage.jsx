@@ -58,7 +58,7 @@ const PersonalPage = () => {
                   </button>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
 
         </div>

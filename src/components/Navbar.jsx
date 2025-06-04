@@ -30,9 +30,8 @@ const Navbar = () => {
         key={link.path}
         to={link.path}
         onClick={() => setIsMobileMenuOpen(false)}
-        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${
-          location.pathname === link.path ? 'text-primary' : 'text-text-main'
-        }`}
+        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${location.pathname === link.path ? 'text-primary' : 'text-text-main'
+          }`}
       >
         {link.label}
       </Link>

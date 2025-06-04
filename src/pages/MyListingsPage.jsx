@@ -23,8 +23,8 @@ const MyListingsPage = () => {
   };
 
   const handleToggleStatus = (id) => {
-    setListings(listings.map(listing => 
-      listing.id === id 
+    setListings(listings.map(listing =>
+      listing.id === id
         ? { ...listing, available: !listing.available }
         : listing
     ));
@@ -79,8 +79,8 @@ const MyListingsPage = () => {
                   <tr key={listing.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <img 
-                          src={listing.images?.[0] || '/placeholder.svg?width=60&height=40&text=House'} 
+                        <img
+                          src={listing.images?.[0] || '/placeholder.svg?width=60&height=40&text=House'}
                           alt={listing.address}
                           className="w-16 h-12 object-cover rounded-lg mr-4"
                         />
@@ -99,11 +99,10 @@ const MyListingsPage = () => {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <button
                         onClick={() => handleToggleStatus(listing.id)}
-                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors ${
-                          listing.available 
-                            ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full transition-colors ${listing.available
+                            ? 'bg-green-100 text-green-800 hover:bg-green-200'
                             : 'bg-red-100 text-red-800 hover:bg-red-200'
-                        }`}
+                          }`}
                       >
                         {listing.available ? 'Active' : 'Inactive'}
                       </button>
@@ -112,13 +111,13 @@ const MyListingsPage = () => {
                       <Link to={`/house/${listing.id}`} className="text-primary hover:text-opacity-80">
                         View
                       </Link>
-                      <button 
-                        onClick={() => alert('Edit feature coming soon!')} 
+                      <button
+                        onClick={() => alert('Edit feature coming soon!')}
                         className="text-accent hover:text-opacity-80"
                       >
                         Edit
                       </button>
-                      <button 
+                      <button
                         onClick={() => handleDeleteListing(listing.id)}
                         className="text-red-600 hover:text-red-800"
                       >

@@ -37,9 +37,10 @@ const LoginPage = () => {
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-xl">
+
         <div>
           <div className="flex justify-center mb-6">
-          <img src="/logo.svg" alt="Logo" className="w-10 h-10 rounded-lg" />
+            <img src="/logo.svg" alt="Logo" className="w-10 h-10 rounded-lg" />
           </div>
           <h2 className="text-center text-3xl font-extrabold text-text-main">
             Sign in to your account
@@ -48,8 +49,10 @@ const LoginPage = () => {
             Demo credentials: minh@gmail.com / string123
           </p>
         </div>
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && <p className="text-center text-sm text-red-600 bg-red-100 p-3 rounded-md">{error}</p>}
+
           <Input
             label="Email address"
             type="email"
@@ -75,12 +78,14 @@ const LoginPage = () => {
             </Button>
           </div>
         </form>
+
         <p className="mt-4 text-center text-sm text-text-muted">
           Don't have an account?{' '}
           <Link to="/signup" className="font-medium text-primary hover:text-opacity-80">
             Sign up
           </Link>
         </p>
+
       </div>
     </div>
   );

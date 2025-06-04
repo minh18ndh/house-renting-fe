@@ -26,7 +26,7 @@ function App() {
             <Route path="/search" element={<SearchResultsPage />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/feedback" element={<FeedbackForm />} />
-            
+
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<PersonalPage />} />
               <Route path="/my-listings" element={<MyListingsPage />} />
