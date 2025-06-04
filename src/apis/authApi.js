@@ -12,10 +12,4 @@ export const signupApi = (fullName, email, password, phone) =>
         body: { fullName, email, password, phone },
     });
 
-export const getMeApi = () => {
-    const token = localStorage.getItem('rentahouse_token');
-    return apiFetch('/auth/me', {
-        method: 'GET',
-        token,
-    });
-};
+export const getMeApi = () => apiFetch('/auth/me');

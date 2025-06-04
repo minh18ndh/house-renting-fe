@@ -1,14 +1,11 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
-export const STATIC_URL = (import.meta.env.VITE_API_URL?.replace(/\/api$/, '') || 'http://localhost:3000');
+export const STATIC_URL = BASE_URL.replace(/\/api$/, '');
 
-const apiFetch = async (endpoint, { method = 'GET', body, token } = {}) => {
-    const headers = {
-        'Content-Type': 'application/json',
-    };
+const getToken = () => localStorage.getItem('rentahouse_token');
 
-    if (token) {
-        headers.Authorization = `Bearer ${token}`;
-    }
+const apiFetch = async (endpoint, { method = 'GET', body, token = getToken() } = {}) => {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = `Bearer ${token}`;
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
         method,
