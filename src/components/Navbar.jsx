@@ -1,26 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
-  const isHomePage = location.pathname === '/';
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const navClass = `fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 flex items-center`;
-  const scrolledClass = isHomePage && !isScrolled && !isMobileMenuOpen ? 'bg-transparent text-white' : 'bg-white text-text-main shadow-md';
 
   const handleLogout = () => {
     logout();
@@ -38,19 +24,22 @@ const Navbar = () => {
     { path: '/profile', label: 'Profile' },
   ];
 
-  const renderLinks = (links) => links.map(link => (
-    <Link
-      key={link.path}
-      to={link.path}
-      onClick={() => setIsMobileMenuOpen(false)}
-      className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${location.pathname === link.path ? 'text-primary' : (isHomePage && !isScrolled && !isMobileMenuOpen ? 'text-white' : 'text-text-main')}`}
-    >
-      {link.label}
-    </Link>
-  ));
+  const renderLinks = (links) =>
+    links.map(link => (
+      <Link
+        key={link.path}
+        to={link.path}
+        onClick={() => setIsMobileMenuOpen(false)}
+        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${
+          location.pathname === link.path ? 'text-primary' : 'text-text-main'
+        }`}
+      >
+        {link.label}
+      </Link>
+    ));
 
   return (
-    <nav className={`${navClass} ${scrolledClass}`}>
+    <nav className="bg-white text-text-main shadow-md fixed top-0 left-0 right-0 z-50 h-16 flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -58,13 +47,13 @@ const Navbar = () => {
           </div>
           <span className="font-bold text-xl">RentAHouse</span>
         </Link>
-        
+
         <div className="hidden md:flex items-center space-x-4">
           {renderLinks(navLinks)}
           {user && renderLinks(authenticatedLinks)}
           {!user ? (
             <>
-              <Link to="/login" className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${isHomePage && !isScrolled ? 'text-white' : 'text-text-main'}`}>Login</Link>
+              <Link to="/login" className="px-3 py-2 rounded-md text-sm font-medium text-text-main hover:text-primary transition-colors">Login</Link>
               <Link to="/signup" className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">Sign Up</Link>
             </>
           ) : (

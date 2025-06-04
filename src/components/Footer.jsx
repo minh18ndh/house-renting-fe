@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
@@ -33,10 +32,10 @@ const Footer = () => {
           </div>
           <div>
             <h5 className="font-semibold mb-3">Contact</h5>
-            <p className="text-sm text-gray-400">123 Property Lane</p>
-            <p className="text-sm text-gray-400">Cityville, ST 12345</p>
+            <p className="text-sm text-gray-400">1 Dai Co Viet</p>
+            <p className="text-sm text-gray-400">Hai Ba Trung, HN 11600</p>
             <p className="text-sm text-gray-400">contact@rentahouse.com</p>
-            <p className="text-sm text-gray-400">(555) 123-4567</p>
+            <p className="text-sm text-gray-400">038 669 6699</p>
           </div>
         </div>
         <div className="mt-8 border-t border-gray-700 pt-8 text-center">
