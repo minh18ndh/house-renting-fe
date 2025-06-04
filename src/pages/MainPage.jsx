@@ -15,7 +15,7 @@ const MainPage = () => {
       <section className="h-[calc(100vh-4rem)] bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="container mx-auto px-4 text-center z-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">Find Your Dream (Rented) Home</h1>
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">Find Your Dream Home</h1>
           <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Search through our listings to find the perfect place to (temporarily) call home. Your next adventure starts here.</p>
             <div className="mt-4 text-center">
               <Button 

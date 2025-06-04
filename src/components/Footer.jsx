@@ -7,12 +7,10 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">R</span>
-              </div>
+            <img src="/logo.svg" alt="Logo" className="w-8 h-8 rounded-lg" />
               <span className="font-bold text-xl">RentAHouse</span>
             </div>
-            <p className="text-sm text-gray-400">Find your next home with us. Discover amazing properties in your area.</p>
+            <p className="text-sm text-gray-400">Find your next home with us.</p>
           </div>
           <div>
             <h5 className="font-semibold mb-3">Quick Links</h5>
@@ -25,9 +23,8 @@ const Footer = () => {
           <div>
             <h5 className="font-semibold mb-3">Support</h5>
             <ul className="space-y-2">
-              <li><Link to="/help" className="hover:text-primary text-sm transition-colors">Help Center</Link></li>
-              <li><Link to="/contact" className="hover:text-primary text-sm transition-colors">Contact Us</Link></li>
-              <li><Link to="/faq" className="hover:text-primary text-sm transition-colors">FAQ</Link></li>
+              <li><Link to="/about" className="hover:text-primary text-sm transition-colors">Contact Us</Link></li>
+              <li><Link to="/feedback" className="hover:text-primary text-sm transition-colors">Feedback Form</Link></li>
             </ul>
           </div>
           <div>
