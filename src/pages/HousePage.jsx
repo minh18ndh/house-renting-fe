@@ -28,7 +28,6 @@ const HousePage = () => {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
 
-
   useEffect(() => {
     setTimeout(() => {
       const foundHouse = mockHouses.find(h => h.id.toString() === id);

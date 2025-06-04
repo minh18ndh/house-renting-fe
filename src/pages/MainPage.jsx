@@ -1,15 +1,32 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../components/Button';
-import { mockHouses } from '../data/houses';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/autoplay';
+import { getAllPosts } from '../apis/postApi';
+import { STATIC_URL } from '../apis/apiFetch';
 
 const MainPage = () => {
   const navigate = useNavigate();
-  const [featured, setFeatured] = useState(getUniqueRandomHouses(mockHouses, 4));
+  const [posts, setPosts] = useState([]);
+  const [featured, setFeatured] = useState([]);
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const fetched = await getAllPosts();
+        setPosts(fetched);
+        const shuffled = fetched.sort(() => 0.5 - Math.random());
+        setFeatured(shuffled.slice(0, 4));
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+      }
+    };
+
+    fetchPosts();
+  }, []);
 
   return (
     <div>
@@ -46,9 +63,9 @@ const MainPage = () => {
             loop={true}
             autoplay={{ delay: 2000 }}
             breakpoints={{
-              640: { slidesPerView: 1 },
-              768: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
+              0: { slidesPerView: 1 },
+              800: { slidesPerView: 2 },
+              1200: { slidesPerView: 3 },
             }}
           >
             {featured.map((house) => (
@@ -58,13 +75,15 @@ const MainPage = () => {
                   className="bg-white rounded shadow hover:shadow-lg transition p-4 h-full cursor-pointer"
                 >
                   <img
-                    src={house.images[0]}
-                    alt={house.title}
+                    src={`${STATIC_URL}/${house.images[0]?.baseUrl}`}
+                    alt={house.content || 'House'}
                     className="w-full h-48 object-cover rounded mb-4"
                   />
                   <h3 className="text-lg font-semibold mb-1 text-primary">{house.address}</h3>
-                  <p className="text-sm text-text-muted">{house.city}</p>
-                  <p className="text-accent font-bold mt-2">${house.price.toLocaleString()} / month</p>
+                  <p className="text-sm text-text-muted">{house.category?.name}</p>
+                  <p className="text-accent font-bold mt-2">
+                    ${house.price.toLocaleString()} / month
+                  </p>
                 </div>
               </SwiperSlide>
             ))}
@@ -77,7 +96,7 @@ const MainPage = () => {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-primary mb-2">{mockHouses.length}+</div>
+              <div className="text-3xl font-bold text-primary mb-2">{posts.length}+</div>
               <div className="text-text-muted">Properties You’ll Love</div>
             </div>
             <div>
@@ -98,18 +117,5 @@ const MainPage = () => {
     </div>
   );
 };
-
-function getUniqueRandomHouses(array, count) {
-  const result = [];
-  const usedIndexes = new Set();
-  while (result.length < count && usedIndexes.size < array.length) {
-    const randomIndex = Math.floor(Math.random() * array.length);
-    if (!usedIndexes.has(randomIndex)) {
-      usedIndexes.add(randomIndex);
-      result.push(array[randomIndex]);
-    }
-  }
-  return result;
-}
 
 export default MainPage;

@@ -35,8 +35,8 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-xl">
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center bg-background py-8 px-4 md:py-12 md:px-10 lg:px-20">
+      <div className="w-full bg-white space-y-6 p-6 rounded-lg shadow-lg md:max-w-xl md:p-10 md:rounded-xl lg:max-w-2xl lg:p-12">
 
         <div>
           <div className="flex justify-center mb-6">
