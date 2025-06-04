@@ -8,6 +8,8 @@ import PersonalPage from './pages/PersonalPage';
 import MyListingsPage from './pages/MyListingsPage';
 import HousePage from './pages/HousePage';
 import SearchResultsPage from './pages/SearchResultsPage';
+import AboutUs from './pages/AboutUs';
+import FeedbackForm from './pages/FeedbackForm';
 import PrivateRoute from './utils/PrivateRoute';
 
 function App() {
@@ -22,7 +24,9 @@ function App() {
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/house/:id" element={<HousePage />} />
             <Route path="/search" element={<SearchResultsPage />} />
-            
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/feedback" element={<FeedbackForm />} />
+
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<PersonalPage />} />
               <Route path="/my-listings" element={<MyListingsPage />} />

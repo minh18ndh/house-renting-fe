@@ -30,9 +30,8 @@ const Navbar = () => {
         key={link.path}
         to={link.path}
         onClick={() => setIsMobileMenuOpen(false)}
-        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${
-          location.pathname === link.path ? 'text-primary' : 'text-text-main'
-        }`}
+        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${location.pathname === link.path ? 'text-primary' : 'text-text-main'
+          }`}
       >
         {link.label}
       </Link>
@@ -42,9 +41,7 @@ const Navbar = () => {
     <nav className="bg-white text-text-main shadow-md fixed top-0 left-0 right-0 z-50 h-16 flex items-center">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">R</span>
-          </div>
+          <img src="/logo.svg" alt="Logo" className="w-8 h-8 rounded-lg" />
           <span className="font-bold text-xl">RentAHouse</span>
         </Link>
 

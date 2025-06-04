@@ -19,7 +19,7 @@ const MapComponent = ({ houses, onHouseSelect, selectedHouse, height = '400px' }
 
   useEffect(() => {
     if (map && houses.length > 0) {
-      const group = new L.featureGroup(houses.map(house => 
+      const group = new L.featureGroup(houses.map(house =>
         L.marker(house.coordinates)
       ));
       map.fitBounds(group.getBounds().pad(0.1));
@@ -60,7 +60,7 @@ const MapComponent = ({ houses, onHouseSelect, selectedHouse, height = '400px' }
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
+
         {houses.map((house) => (
           <Marker
             key={house.id}
@@ -72,8 +72,8 @@ const MapComponent = ({ houses, onHouseSelect, selectedHouse, height = '400px' }
           >
             <Popup>
               <div className="p-2 min-w-[200px]">
-                <img 
-                  src={house.images?.[0] || '/placeholder.svg?width=200&height=120&text=House'} 
+                <img
+                  src={house.images?.[0] || '/placeholder.svg?width=200&height=120&text=House'}
                   alt={house.address}
                   className="w-full h-24 object-cover rounded mb-2"
                 />
@@ -83,7 +83,7 @@ const MapComponent = ({ houses, onHouseSelect, selectedHouse, height = '400px' }
                 <div className="text-xs text-gray-600 mt-1">
                   {house.bedrooms} bed • {house.bathrooms} bath • {house.area} sqft
                 </div>
-                <button 
+                <button
                   onClick={() => window.open(`/house/${house.id}`, '_blank')}
                   className="mt-2 bg-primary text-white px-3 py-1 rounded text-xs hover:bg-opacity-90 transition-colors"
                 >

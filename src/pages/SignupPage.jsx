@@ -54,13 +54,12 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-xl shadow-xl">
+    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center bg-background py-8 px-4 md:py-12 md:px-10 lg:px-20">
+      <div className="w-full bg-white space-y-6 p-6 rounded-lg shadow-lg md:max-w-xl md:p-10 md:rounded-xl lg:max-w-2xl lg:p-12">
+
         <div>
           <div className="flex justify-center mb-6">
-            <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-2xl">R</span>
-            </div>
+            <img src="/logo.svg" alt="Logo" className="w-10 h-10 rounded-lg" />
           </div>
           <h2 className="text-center text-3xl font-extrabold text-text-main">
             Create your account
@@ -71,11 +70,7 @@ const SignupPage = () => {
         </div>
 
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <p className="text-center text-sm text-red-600 bg-red-100 p-3 rounded-md">
-              {error}
-            </p>
-          )}
+          {error && <p className="text-center text-sm text-red-600 bg-red-100 p-3 rounded-md">{error}</p>}
 
           <Input
             label="Full Name"

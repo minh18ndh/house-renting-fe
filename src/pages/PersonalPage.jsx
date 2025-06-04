@@ -20,7 +20,7 @@ const PersonalPage = () => {
               <div className="space-y-4">
                 <div>
                   <label className="block font-medium text-text-main">Full Name</label>
-                  <p className="text-text-muted">{user.name}</p>
+                  <p className="text-text-muted">{user.fullName}</p>
                 </div>
                 <div>
                   <label className="block font-medium text-text-main">Email Address</label>
@@ -58,7 +58,7 @@ const PersonalPage = () => {
                   </button>
                 </div>
               </div>
-            </div>       
+            </div>
           </div>
 
         </div>
