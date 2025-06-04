@@ -29,33 +29,36 @@ const MainPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="bg-background">
       {/* Hero Section */}
-      <section className="h-[calc(100vh-4rem)] bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center text-white relative overflow-hidden">
+      <section className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-primary via-primary to-accent flex items-center justify-center text-white relative overflow-hidden">
         <div className="absolute inset-0 bg-black/20"></div>
-        <div className="container mx-auto px-4 text-center z-10">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fade-in">Find Your Dream Home</h1>
-          <p className="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Search through our listings to find the perfect place to (temporarily) call home. Your next adventure starts here.</p>
-          <div className="mt-4 text-center">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => navigate('/search')}
-              className="text-text-main hover:text-primary animate-bounce"
-              size="sm"
-            >
-              Start searching for your dream home here!
-            </Button>
-          </div>
+        <div className="relative z-10 w-full px-4 md:px-8 lg:px-16 text-center">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in">
+            Find Your Dream Home
+          </h1>
+          <p className="text-base md:text-lg lg:text-xl mb-8 max-w-3xl mx-auto">
+            Search through our listings to find the perfect place to (temporarily) call home.
+            Your next adventure starts here.
+          </p>
+          <Button
+            type="button"
+            variant="ghost"
+            onClick={() => navigate('/search')}
+            className="text-text-main hover:text-primary animate-bounce"
+            size="sm"
+          >
+            Start searching for your dream home here!
+          </Button>
         </div>
       </section>
 
-      {/* Featured Projects Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-text-main">Featured Listings</h2>
-          </div>
+      {/* Featured Section */}
+      <section className="py-12 md:py-16 bg-gray-50">
+        <div className="w-full px-4 md:px-8 lg:px-16">
+          <h2 className="text-xl md:text-2xl font-semibold text-text-main mb-6">
+            Featured Listings
+          </h2>
           <Swiper
             modules={[Autoplay]}
             spaceBetween={20}
@@ -79,7 +82,9 @@ const MainPage = () => {
                     alt={house.content || 'House'}
                     className="w-full h-48 object-cover rounded mb-4"
                   />
-                  <h3 className="text-lg font-semibold mb-1 text-primary">{house.address}</h3>
+                  <h3 className="text-base md:text-lg font-semibold mb-1 text-primary">
+                    {house.address}
+                  </h3>
                   <p className="text-sm text-text-muted">{house.category?.name}</p>
                   <p className="text-accent font-bold mt-2">
                     ${house.price.toLocaleString()} / month
@@ -92,30 +97,25 @@ const MainPage = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">{posts.length}+</div>
-              <div className="text-text-muted">Properties You’ll Love</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">2+</div>
-              <div className="text-text-muted">Cities & Still Growing</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">1000+</div>
-              <div className="text-text-muted">Happy Tenants (Zero Zombies)</div>
-            </div>
-            <div>
-              <div className="text-3xl font-bold text-primary mb-2">24/7</div>
-              <div className="text-text-muted">Support. Humans, Not Bots</div>
-            </div>
+      <section className="py-12 md:py-16 bg-white">
+        <div className="w-full px-4 md:px-8 lg:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <StatBox number={posts.length + '+'} label="Properties You’ll Love" />
+            <StatBox number="2+" label="Cities & Still Growing" />
+            <StatBox number="1000+" label="Happy Tenants (Zero Zombies)" />
+            <StatBox number="24/7" label="Support. Humans, Not Bots" />
           </div>
         </div>
       </section>
     </div>
   );
 };
+
+const StatBox = ({ number, label }) => (
+  <div>
+    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-2">{number}</div>
+    <div className="text-sm md:text-base text-text-muted">{label}</div>
+  </div>
+);
 
 export default MainPage;
