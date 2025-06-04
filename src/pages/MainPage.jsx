@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import Button from '../components/Button';
 import { mockHouses } from '../data/houses';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -8,6 +9,7 @@ import 'swiper/css/autoplay';
 
 const MainPage = () => {
   const navigate = useNavigate();
+  const [featured, setFeatured] = useState(getUniqueRandomHouses(mockHouses, 4));
 
   return (
     <div>
@@ -34,7 +36,9 @@ const MainPage = () => {
       {/* Featured Projects Section */}
       <section className="py-16 bg-gray-50">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-text-main mb-6">Featured Projects</h2>
+          <div className="mb-6">
+  <h2 className="text-2xl font-semibold text-text-main">Featured Projects</h2>
+</div>
           <Swiper
             modules={[Autoplay]}
             spaceBetween={20}
@@ -47,9 +51,12 @@ const MainPage = () => {
               1024: { slidesPerView: 3 },
             }}
           >
-            {getRandomHouses(mockHouses, 4).map((house) => (
+            {featured.map((house) => (
               <SwiperSlide key={house.id}>
-                <div className="bg-white rounded shadow hover:shadow-lg transition p-4 h-full">
+                <div
+                  onClick={() => navigate(`/house/${house.id}`)}
+                  className="bg-white rounded shadow hover:shadow-lg transition p-4 h-full cursor-pointer"
+                >
                   <img
                     src={house.images[0]}
                     alt={house.title}
@@ -64,7 +71,6 @@ const MainPage = () => {
           </Swiper>
         </div>
       </section>
-
 
       {/* Stats Section */}
       <section className="py-16 bg-white">
@@ -93,9 +99,17 @@ const MainPage = () => {
   );
 };
 
-function getRandomHouses(array, count) {
-  const shuffled = [...array].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+function getUniqueRandomHouses(array, count) {
+  const result = [];
+  const usedIndexes = new Set();
+  while (result.length < count && usedIndexes.size < array.length) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    if (!usedIndexes.has(randomIndex)) {
+      usedIndexes.add(randomIndex);
+      result.push(array[randomIndex]);
+    }
+  }
+  return result;
 }
 
 export default MainPage;

@@ -2,6 +2,21 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Button from '../components/Button';
 import { mockHouses } from '../data/houses';
+import { mockComments } from '../data/comments';
+
+const StarRating = ({ rating, setRating }) => (
+  <div className="flex space-x-1">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <button
+        key={star}
+        onClick={() => setRating(star)}
+        className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
+      >
+        ★
+      </button>
+    ))}
+  </div>
+);
 
 const HousePage = () => {
   const { id } = useParams();
@@ -9,6 +24,11 @@ const HousePage = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [commentsList, setCommentsList] = useState([]);
+  const [userName, setUserName] = useState('');
+  const [comment, setComment] = useState('');
+  const [rating, setRating] = useState(0);
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,6 +38,8 @@ const HousePage = () => {
       }
       setLoading(false);
     }, 500);
+
+    setCommentsList(mockComments[id] || []);
   }, [id]);
 
   if (loading) {
@@ -52,6 +74,10 @@ const HousePage = () => {
   const handleContactOwner = () => {
     setShowContactForm(true);
   };
+
+  const averageRating = commentsList.length
+  ? (commentsList.reduce((sum, c) => sum + c.rating, 0) / commentsList.length).toFixed(1)
+  : null;
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -188,7 +214,7 @@ const HousePage = () => {
 
         {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="bg-white p-6 rounded-xl shadow-lg sticky top-20">
+          <div className="bg-white p-6 rounded-xl shadow-lg mb-6">
             <h2 className="text-xl font-semibold text-text-main mb-4">Contact Property Owner</h2>
             
             {!showContactForm ? (
@@ -324,6 +350,84 @@ const HousePage = () => {
               </Link>
             ))}
         </div>
+      </div>
+
+      {/* Comments Section */}
+      <div className="mt-16 max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-lg">
+        <h2 className="text-2xl font-bold text-text-main mb-2">Comments & Ratings</h2>
+
+        {averageRating && (
+          <p className="mb-4 text-lg text-yellow-500 font-medium">
+            Average Rating: {averageRating} / 5 ⭐
+          </p>
+        )}
+
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (userName.trim() && comment.trim() && rating > 0) {
+              const newComment = {
+                name: userName.trim(),
+                rating,
+                comment: comment.trim(),
+                date: new Date().toISOString().split('T')[0]
+              };
+              setCommentsList(prev => [...prev, newComment]);
+              setUserName('');
+              setComment('');
+              setRating(0);
+            }
+          }}
+          className="space-y-4"
+        >
+          <div>
+            <label className="block text-sm font-medium text-text-muted mb-1">Your Name</label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-border rounded-md"
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Nguyen Van A"
+              required
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-text-muted mb-1">Your Rating</label>
+            <StarRating rating={rating} setRating={setRating} />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-text-muted mb-1">Your Comment</label>
+            <textarea
+              rows={3}
+              className="w-full px-3 py-2 border border-border rounded-md"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="Your thoughts about this property..."
+              required
+            />
+          </div>
+
+          <Button type="submit" variant="primary">Submit</Button>
+        </form>
+
+        {commentsList.length > 0 && (
+          <div className="mt-8 space-y-6">
+            {commentsList.map((item, idx) => (
+              <div key={idx} className="border-t pt-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="font-semibold text-text-main">{item.name}</span>
+                  <span className="text-xs text-gray-500">{item.date}</span>
+                </div>
+                <div className="text-yellow-500 mb-1">
+                  {'★'.repeat(item.rating)}{'☆'.repeat(5 - item.rating)}
+                </div>
+                <p className="text-text-muted">{item.comment}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
