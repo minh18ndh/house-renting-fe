@@ -3,7 +3,7 @@ import Button from './Button';
 import { STATIC_URL } from '../apis/apiFetch';
 
 const HouseCard = ({ house }) => {
-  const { id, price, address, bedroom, area, type } = house;
+  const { id, price, address, bedroom, area, category } = house;
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl">
@@ -11,11 +11,11 @@ const HouseCard = ({ house }) => {
         <div className="relative">
           <img
             src={`${STATIC_URL}/${house.images[0]?.baseUrl}` || `/placeholder.svg?width=400&height=250&text=House+Image`}
-            alt={`${type} at ${address}`}
+            alt={`${category.name} at ${address}`}
             className="w-full h-56 object-cover"
           />
           <div className="absolute top-3 left-3 bg-primary text-white px-2 py-1 rounded-md text-xs font-medium">
-            {type}
+            {category.name}
           </div>
         </div>
       </Link>

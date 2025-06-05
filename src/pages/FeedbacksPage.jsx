@@ -17,7 +17,6 @@ const FeedbacksPage = () => {
                 setLoading(false);
             }
         };
-
         fetchFeedbacks();
     }, []);
 
@@ -40,28 +39,52 @@ const FeedbacksPage = () => {
                     <p className="text-text-muted">No users have submitted feedback so far.</p>
                 </div>
             ) : (
-                <div className="bg-white shadow-md rounded-lg overflow-x-auto">
-                    <table className="min-w-full divide-y divide-border">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">Submitted At</th>
-                                <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">Content</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-border">
-                            {feedbacks.map((fb) => (
-                                <tr key={fb.id} className="hover:bg-gray-50 align-top">
-                                    <td className="px-6 py-6 text-sm text-text-muted whitespace-nowrap">
+                <>
+                    {/* Card View for small screens */}
+                    <div className="lg:hidden space-y-6">
+                        {feedbacks.map((fb) => (
+                            <div key={fb.id} className="bg-white p-4 rounded-lg shadow-md space-y-2">
+                                <p className="text-sm text-text-muted">
+                                    Submitted At:{' '}
+                                    <span className="text-text-main font-medium">
                                         {fb.submitDate ? format(new Date(fb.submitDate), 'PPPpp') : '—'}
-                                    </td>
-                                    <td className="px-6 py-6 text-sm text-text-main whitespace-pre-line break-words max-w-4xl">
-                                        {fb.content}
-                                    </td>
+                                    </span>
+                                </p>
+                                <p className="text-sm text-text-main whitespace-pre-line break-words">
+                                    {fb.content}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Table View for large screens */}
+                    <div className="hidden lg:block bg-white shadow-md rounded-lg overflow-x-auto">
+                        <table className="min-w-full divide-y divide-border">
+                            <thead className="bg-gray-50">
+                                <tr>
+                                    <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">
+                                        Submitted At
+                                    </th>
+                                    <th className="px-6 py-4 text-left text-xs font-semibold text-text-muted uppercase">
+                                        Content
+                                    </th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody className="divide-y divide-border">
+                                {feedbacks.map((fb) => (
+                                    <tr key={fb.id} className="hover:bg-gray-50 align-top">
+                                        <td className="px-6 py-6 text-sm text-text-muted whitespace-nowrap">
+                                            {fb.submitDate ? format(new Date(fb.submitDate), 'PPPpp') : '—'}
+                                        </td>
+                                        <td className="px-6 py-6 text-sm text-text-main whitespace-pre-line break-words max-w-4xl">
+                                            {fb.content}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </>
             )}
         </div>
     );
