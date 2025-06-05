@@ -14,6 +14,7 @@ import SearchResultsPage from './pages/SearchResultsPage';
 import AboutUs from './pages/AboutUs';
 import FeedbackForm from './pages/FeedbackForm';
 import PrivateRoute from './utils/PrivateRoute';
+import AdminRoute from './utils/AdminRoute';
 import ViewTracker from './utils/ViewTracker';
 
 function App() {
@@ -36,8 +37,11 @@ function App() {
               <Route path="/profile" element={<PersonalPage />} />
               <Route path="/listings" element={<MyListingsPage />} />
               <Route path="/add-listing" element={<AddListingsPage />} />
-              <Route path="/comments" element={<CommentsPage />} />
-              <Route path="/feedbacks" element={<FeedbacksPage />} />
+
+              <Route element={<AdminRoute />}>
+                <Route path="/comments" element={<CommentsPage />} />
+                <Route path="/feedbacks" element={<FeedbacksPage />} />
+              </Route>
             </Route>
           </Routes>
         </main>
