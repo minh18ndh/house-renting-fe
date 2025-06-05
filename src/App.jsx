@@ -32,7 +32,7 @@ function App() {
 
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<PersonalPage />} />
-              <Route path="/my-listings" element={<MyListingsPage />} />
+              <Route path="/listings" element={<MyListingsPage />} />
               <Route path="/add-listing" element={<AddListingsPage />} />
             </Route>
           </Routes>

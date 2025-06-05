@@ -46,7 +46,7 @@ const MyListingsPage = () => {
   if (loading) {
     return (
       <div className="container mx-auto p-4 text-center">
-        <div className="animate-pulse">Loading your listings...</div>
+        <div className="animate-pulse">Loading...</div>
       </div>
     );
   }

@@ -60,7 +60,11 @@ const HousePage = () => {
   };
 
   if (loading) {
-    return <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8 text-center">Loading...</div>;
+    return (
+      <div className="container mx-auto p-4 text-center">
+        <div className="animate-pulse">Loading...</div>
+      </div>
+    );
   }
 
   if (!house) {

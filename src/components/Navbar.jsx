@@ -20,7 +20,7 @@ const Navbar = () => {
   ];
 
   const authenticatedLinks = [
-    { path: '/my-listings', label: 'My Listings' },
+    { path: '/listings', label: 'My Listings' },
     { path: '/profile', label: 'Profile' },
   ];
 
