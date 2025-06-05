@@ -1,24 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import Input from '../components/Input';
+import { useState } from 'react';
 import Button from '../components/Button';
+import { createFeedback } from '../apis/feedbackApi';
 
 const FeedbackForm = () => {
-  const { user } = useAuth();
-  const [name, setName] = useState('');
   const [content, setContent] = useState('');
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (user?.name) {
-      setName(user.name);
-    }
-  }, [user]);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('sent successfully');
-    setMessage('Sent successfully!');
+    setMessage('');
+    setError('');
+    setLoading(true);
+
+    try {
+      await createFeedback({ content });
+      setMessage('Sent successfully!');
+      setContent('');
+    } catch (err) {
+      console.error('Failed to submit feedback:', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -26,17 +31,6 @@ const FeedbackForm = () => {
       <div className="bg-white p-8 rounded-2xl shadow-md max-w-lg w-full border border-border">
         <h1 className="text-3xl font-bold text-primary mb-6 text-center">Feedback Form</h1>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <label className="text-sm font-medium text-text-main block mb-1">Your Name</label>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Your full name"
-              required
-            />
-          </div>
-
           <div>
             <label className="text-sm font-medium text-text-main block mb-1">Your Feedback</label>
             <textarea
@@ -49,9 +43,12 @@ const FeedbackForm = () => {
             />
           </div>
 
-          <Button type="submit" className="w-full">Submit</Button>
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Sending...' : 'Submit'}
+          </Button>
 
           {message && <p className="text-green-600 text-center pt-2">{message}</p>}
+          {error && <p className="text-red-600 text-center pt-2">{error}</p>}
         </form>
       </div>
     </div>

@@ -1,7 +1,32 @@
 import { useAuth } from '../hooks/useAuth';
+import { useEffect, useState } from 'react';
+import { getAllPosts } from '../apis/postApi';
+import { getTotalViews } from '../apis/totalViewApi';
 
 const PersonalPage = () => {
   const { user, logout, loading: authLoading } = useAuth();
+  const [listingCount, setListingCount] = useState(0);
+  const [totalViews, setTotalViews] = useState(0);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const fetchData = async () => {
+      try {
+        if (user.role === 'Admin') {
+          const data = await getTotalViews();
+          setTotalViews(data.total || 0);
+        } else {
+          const posts = await getAllPosts({ userId: user.id });
+          setListingCount(posts.length);
+        }
+      } catch (err) {
+        console.error('Failed to fetch analytics:', err);
+      }
+    };
+
+    fetchData();
+  }, [user]);
 
   if (authLoading) return <div className="container mx-auto p-4 text-center">Loading profile...</div>;
   if (!user) return <div className="container mx-auto p-4 text-center">User not found.</div>;
@@ -40,13 +65,17 @@ const PersonalPage = () => {
               <h3 className="text-lg font-semibold text-text-main mb-4">Account</h3>
               <div className="space-y-4">
                 <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-text-main">My Listings</h4>
-                  <p className="text-sm text-green-600">2</p>
-                </div>
-
-                <div className="p-4 bg-gray-50 rounded-lg">
-                  <h4 className="font-medium text-text-main">Total Reviews</h4>
-                  <p className="text-sm text-green-600">13</p>
+                  {user.role === 'Admin' ? (
+                    <>
+                      <h4 className="font-medium text-text-main">Total Views of Website</h4>
+                      <p className="text-sm text-blue-600">{totalViews}</p>
+                    </>
+                  ) : (
+                    <>
+                      <h4 className="font-medium text-text-main">My Listings</h4>
+                      <p className="text-sm text-green-600">{listingCount}</p>
+                    </>
+                  )}
                 </div>
 
                 <div className="pt-4 border-t">

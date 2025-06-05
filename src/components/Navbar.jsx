@@ -1,95 +1,99 @@
 import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
+import { Menu, X } from 'lucide-react';
 
 const Navbar = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useAuth();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/');
-    setIsMobileMenuOpen(false);
   };
+
+  const isAdmin = user?.role === 'Admin';
 
   const navLinks = [
     { path: '/', label: 'Home' },
     { path: '/search', label: 'Search' },
+    ...(user ? [
+      { path: '/listings', label: isAdmin ? 'Listings' : 'My Listings' },
+      ...(isAdmin ? [
+        { path: '/comments', label: 'Comments' },
+        { path: '/feedbacks', label: 'Feedbacks' },
+      ] : []),
+      { path: '/profile', label: 'Profile' }
+    ] : [])
   ];
-
-  const authenticatedLinks = [
-    { path: '/listings', label: 'My Listings' },
-    { path: '/profile', label: 'Profile' },
-  ];
-
-  const renderLinks = (links) =>
-    links.map(link => (
-      <Link
-        key={link.path}
-        to={link.path}
-        onClick={() => setIsMobileMenuOpen(false)}
-        className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${location.pathname === link.path ? 'text-primary' : 'text-text-main'
-          }`}
-      >
-        {link.label}
-      </Link>
-    ));
 
   return (
-    <nav className="bg-white text-text-main shadow-md fixed top-0 left-0 right-0 z-[9999] h-16 flex items-center">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+    <nav className="bg-white text-text-main shadow-md fixed top-0 left-0 right-0 z-[9999] h-16">
+      <div className="container mx-auto px-4 flex items-center justify-between h-full">
+        {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <img src="/logo.svg" alt="Logo" className="w-8 h-8 rounded-lg" />
           <span className="font-bold text-xl">RentAHouse</span>
         </Link>
 
+        {/* Desktop nav */}
         <div className="hidden md:flex items-center space-x-4">
-          {renderLinks(navLinks)}
-          {user && renderLinks(authenticatedLinks)}
+          {navLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              className={`px-3 py-2 rounded-md text-sm font-medium hover:text-primary transition-colors ${
+                location.pathname === link.path ? 'text-primary' : 'text-text-main'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
           {!user ? (
             <>
-              <Link to="/login" className="px-3 py-2 rounded-md text-sm font-medium text-text-main hover:text-primary transition-colors">Login</Link>
-              <Link to="/signup" className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">Sign Up</Link>
+              <Link to="/login" className="px-3 py-2 rounded-md text-sm font-medium hover:text-primary">Login</Link>
+              <Link to="/signup" className="bg-primary text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90">Sign Up</Link>
             </>
           ) : (
-            <button onClick={handleLogout} className="bg-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90 transition-colors">Logout</button>
+            <button onClick={handleLogout} className="bg-accent text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-opacity-90">
+              Logout
+            </button>
           )}
         </div>
 
-        <div className="md:hidden">
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="inline-flex items-center justify-center p-2 rounded-md hover:bg-gray-100 focus:outline-none"
-          >
-            {!isMobileMenuOpen ? (
-              <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            ) : (
-              <svg className="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            )}
-          </button>
-        </div>
+        {/* Mobile menu button */}
+        <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-text-main">
+          {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
       </div>
 
-      {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-16 inset-x-0 bg-white shadow-lg p-2 space-y-1">
-          {renderLinks(navLinks)}
-          {user && renderLinks(authenticatedLinks)}
-          <div className="pt-4 pb-3 border-t border-border">
-            {!user ? (
-              <div className="flex flex-col space-y-2">
-                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-text-main hover:text-primary">Login</Link>
-                <Link to="/signup" onClick={() => setIsMobileMenuOpen(false)} className="block bg-primary text-white px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90">Sign Up</Link>
-              </div>
-            ) : (
-              <button onClick={handleLogout} className="w-full text-left block bg-accent text-white px-3 py-2 rounded-md text-base font-medium hover:bg-opacity-90">Logout</button>
-            )}
-          </div>
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-white shadow-lg px-4 pb-4 pt-2">
+          {navLinks.map(link => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setMenuOpen(false)}
+              className={`block py-2 text-sm font-medium ${
+                location.pathname === link.path ? 'text-primary' : 'text-text-main'
+              }`}
+            >
+              {link.label}
+            </Link>
+          ))}
+          {!user ? (
+            <>
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="block py-2 text-sm hover:text-primary">Login</Link>
+              <Link to="/signup" onClick={() => setMenuOpen(false)} className="block py-2 bg-primary text-white rounded-md text-center mt-2">Sign Up</Link>
+            </>
+          ) : (
+            <button onClick={handleLogout} className="w-full mt-2 bg-accent text-white py-2 rounded-md text-sm">
+              Logout
+            </button>
+          )}
         </div>
       )}
     </nav>

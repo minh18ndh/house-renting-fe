@@ -7,6 +7,8 @@ import SignupPage from './pages/SignupPage';
 import PersonalPage from './pages/PersonalPage';
 import MyListingsPage from './pages/MyListingsPage';
 import AddListingsPage from './pages/AddListingPage';
+import CommentsPage from './pages/CommentsPage';
+import FeedbacksPage from './pages/FeedbacksPage';
 import HousePage from './pages/HousePage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AboutUs from './pages/AboutUs';
@@ -34,6 +36,8 @@ function App() {
               <Route path="/profile" element={<PersonalPage />} />
               <Route path="/listings" element={<MyListingsPage />} />
               <Route path="/add-listing" element={<AddListingsPage />} />
+              <Route path="/comments" element={<CommentsPage />} />
+              <Route path="/feedbacks" element={<FeedbacksPage />} />
             </Route>
           </Routes>
         </main>
