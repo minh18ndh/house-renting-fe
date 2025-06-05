@@ -52,7 +52,7 @@ const AdPopup = () => {
                 <p className="text-text-muted mb-4">Check out our featured rental listing of the week!</p>
 
                 <img
-                    src={`${STATIC_URL}/uploads/ny1.jpg`}
+                    src={`https://7dfa-14-232-114-126.ngrok-free.app/api/uploads/ny1.jpg`}
                     onError={(e) => {
                         e.target.src = `/placeholder.svg?width=400&height=250&text=House+Image`;
                     }}
