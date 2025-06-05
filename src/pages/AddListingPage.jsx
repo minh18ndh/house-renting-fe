@@ -1,215 +1,212 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
-import { getPostById } from '../apis/postApi';
-import { createComment } from '../apis/commentApi';
-import { useAuth } from '../hooks/useAuth';
-import { STATIC_URL } from '../apis/apiFetch';
-import MapComponent from '../components/MapComponent';
+import { createPost } from '../apis/postApi';
+import { getAllCategories } from '../apis/categoryApi';
+import MapPicker from '../components/MapPicker';
 
-const StarRating = ({ rating, setRating }) => (
-  <div className="flex space-x-1">
-    {[1, 2, 3, 4, 5].map((star) => (
-      <button
-        key={star}
-        type="button"
-        onClick={() => setRating(star)}
-        className={star <= rating ? 'text-yellow-400' : 'text-gray-300'}
-      >
-        ★
-      </button>
-    ))}
-  </div>
-);
+const AddListingPage = () => {
+  const navigate = useNavigate();
 
-const HousePage = () => {
-  const { id } = useParams();
-  const { user } = useAuth();
-  const [house, setHouse] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(0);
+  const [categoryId, setCategoryId] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [price, setPrice] = useState('');
+  const [area, setArea] = useState('');
+  const [address, setAddress] = useState('');
+  const [location, setLocation] = useState('');
+  const [bedroom, setBedroom] = useState('');
+  const [content, setContent] = useState('');
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const loadCategories = async () => {
       try {
-        const data = await getPostById(id);
-        setHouse(data);
+        const data = await getAllCategories();
+        setCategories(data);
       } catch (err) {
-        console.error('Failed to fetch post:', err);
-      } finally {
-        setLoading(false);
+        console.error('Failed to load categories:', err);
       }
     };
-    fetchPost();
-  }, [id]);
+    loadCategories();
+  }, []);
 
-  const handleCommentSubmit = async (e) => {
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files).slice(0, 5); // Limit to 5 files
+    setImages(files);
+
+    const previews = files.map(file => URL.createObjectURL(file));
+    setImagePreviews(previews);
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!comment.trim() || rating < 1 || rating > 5) return;
+    setError('');
+    setLoading(true);
+
+    if (!location) {
+      setError('You must pin a location on the map.');
+      setLoading(false);
+      return;
+    }
+
+    if (images.length == 0) {
+      setError('You must have at least 1 image.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      await createComment({ postId: id, content: comment.trim(), rating });
-      const updated = await getPostById(id);
-      setHouse(updated);
-      setComment('');
-      setRating(0);
+      const formData = new FormData();
+      formData.append('categoryId', categoryId);
+      formData.append('price', price);
+      formData.append('area', area);
+      formData.append('address', address);
+      formData.append('location', location);
+      formData.append('bedroom', bedroom);
+      formData.append('content', content);
+      images.forEach((file) => formData.append('images', file));
+
+      await createPost(formData);
+      navigate('/listings');
     } catch (err) {
-      console.error('Failed to submit comment:', err);
+      setError(err.message || 'Failed to create post');
+    } finally {
+      setLoading(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="container mx-auto p-4 text-center">
-        <div className="animate-pulse">Loading...</div>
-      </div>
-    );
-  }
-
-  if (!house) {
-    return (
-      <div className="container mx-auto px-4 md:px-8 lg:px-16 py-16 text-center">
-        <h2 className="text-2xl md:text-3xl font-bold">Post not found</h2>
-        <Link to="/search">
-          <Button variant="primary" className="mt-4">Browse Listings</Button>
-        </Link>
-      </div>
-    );
-  }
-
   return (
     <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
-      {/* Breadcrumb */}
-      <nav className="mb-6">
-        <ol className="flex items-center space-x-2 text-sm text-text-muted">
-          <li><Link to="/" className="hover:text-primary">Home</Link></li>
-          <li>/</li>
-          <li><Link to="/search" className="hover:text-primary">Search</Link></li>
-          <li>/</li>
-          <li className="text-text-main">{house.address}</li>
-        </ol>
-      </nav>
-      
-      {/* Image Gallery */}
-      <div className="mb-8 relative">
-        <img
-          src={`${STATIC_URL}/${house.images[currentImageIndex]?.baseUrl}`}
-          alt="Property"
-          className="w-full h-[250px] md:h-[400px] lg:h-[600px] object-cover rounded-xl shadow-2xl"
-        />
-        {house.images.length > 1 && (
-          <>
-            <button
-              onClick={() => setCurrentImageIndex((currentImageIndex - 1 + house.images.length) % house.images.length)}
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => setCurrentImageIndex((currentImageIndex + 1) % house.images.length)}
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-            >
-              →
-            </button>
-          </>
-        )}
-      </div>
+      <h1 className="text-2xl md:text-3xl font-bold mb-6 text-text-main">Create New Listing</h1>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Main */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Header */}
-          <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main">{house.address}</h1>
-            <p className="text-sm md:text-base lg:text-lg text-text-muted">{house.category?.name}</p>
-            <p className="text-primary font-bold text-lg md:text-xl mt-2">${house.price.toLocaleString()} / month</p>
-          </div>
+      {error && <p className="text-red-600 mb-4">{error}</p>}
 
-          {/* Property Specs */}
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <div className="text-center">
-              <p className="text-xl font-bold">{house.bedroom}</p>
-              <p className="text-text-muted text-sm">Bedrooms</p>
-            </div>
-            <div className="text-center">
-              <p className="text-xl font-bold">{house.area}</p>
-              <p className="text-text-muted text-sm">Area (m²)</p>
-            </div>
-            <div className="text-center col-span-2 md:col-span-1">
-              <p className={`text-xl font-bold ${house.isRented ? 'text-red-500' : 'text-green-600'}`}>
-                {house.isRented ? 'Rented' : 'Available'}
-              </p>
-              <p className="text-text-muted text-sm">Status</p>
-            </div>
-          </div>
+      <form onSubmit={handleSubmit} className="space-y-6 bg-white p-6 rounded-xl shadow">
 
-          {/* Description */}
-          <div>
-            <h2 className="text-xl md:text-2xl font-semibold text-text-main mb-4">Description</h2>
-            <p className="text-text-muted leading-relaxed">{house.content}</p>
-          </div>
-
-          {/* Comments */}
-          <div className="bg-white p-4 md:p-6 rounded-xl shadow">
-            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-text-main">Comments & Ratings</h2>
-
-            {user && (
-              <form onSubmit={handleCommentSubmit} className="space-y-4 mb-8">
-                <div>
-                  <label className="block text-sm font-medium text-text-muted mb-1">Your Rating</label>
-                  <StarRating rating={rating} setRating={setRating} />
-                </div>
-                <textarea
-                  rows={3}
-                  className="w-full border border-border rounded-md p-2"
-                  placeholder="Write your comment here..."
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  required
-                />
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={rating < 1 || comment.trim().length === 0}
-                >
-                  Submit
-                </Button>
-              </form>
-            )}
-
-            {house.comments.length === 0 ? (
-              <p className="text-text-muted">No comments yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {house.comments.map((c, i) => (
-                  <div key={i} className="border-t pt-4">
-                    <p className="font-medium text-text-main">{c.user.fullName}</p>
-                    <p className="text-yellow-500 text-sm">{"★".repeat(c.rating)}{"☆".repeat(5 - c.rating)}</p>
-                    <p className="text-text-muted">{c.content}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sidebar */}
+        {/* Category */}
         <div>
-          <div className="bg-white p-4 md:p-6 rounded-xl shadow">
-            <h3 className="text-lg md:text-xl font-semibold text-text-main mb-2">Contact Owner</h3>
-            <p className="text-sm text-text-muted mb-4">Reach out to the property owner directly for inquiries.</p>
-            <Button variant="outline" className="w-full">Call: {house.user.phone}</Button>
-          </div>
-
-          <div className="bg-white p-4 md:p-6 rounded-xl shadow mt-4">
-            <MapComponent location={house.location} title={house.address} />
-          </div>
+          <label className="block mb-1 font-medium text-sm">Category</label>
+          <select
+            value={categoryId}
+            onChange={(e) => setCategoryId(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+          >
+            <option value="">Select category</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
+          </select>
         </div>
 
-      </div>
+        {/* Price */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Price ($)</label>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+          />
+        </div>
+
+        {/* Area */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Area (m²)</label>
+          <input
+            type="number"
+            value={area}
+            onChange={(e) => setArea(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+          />
+        </div>
+
+        {/* Address */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Address</label>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+          />
+        </div>
+
+        {/* Location Map */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Pin Location</label>
+          <MapPicker value={location} onChange={setLocation} />
+          <input
+            type="text"
+            readOnly
+            value={location}
+            className="w-full mt-2 bg-gray-100 text-gray-600 px-3 py-2 border border-border rounded-md"
+          />
+        </div>
+
+        {/* Bedroom */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Bedroom</label>
+          <input
+            type="number"
+            value={bedroom}
+            onChange={(e) => setBedroom(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+          />
+        </div>
+
+        {/* Content */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Description</label>
+          <textarea
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            required
+            className="w-full border border-border rounded-md px-3 py-2"
+            rows={4}
+          />
+        </div>
+
+        {/* Images */}
+        <div>
+          <label className="block mb-1 font-medium text-sm">Images (only first 5 will be saved)</label>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageChange}
+            className="w-full"
+          />
+
+          {imagePreviews.length > 0 && (
+            <div className="mt-3 grid grid-cols-2 md:grid-cols-3 gap-4">
+              {imagePreviews.map((src, i) => (
+                <div key={i} className="relative border rounded shadow overflow-hidden">
+                  <img src={src} alt={`Preview ${i}`} className="object-cover w-full h-40" />
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Submit */}
+        <div className="pt-4">
+          <Button type="submit" variant="primary" disabled={loading}>
+            {loading ? 'Creating...' : 'Create Listing'}
+          </Button>
+        </div>
+
+      </form>
     </div>
   );
 };
 
-export default HousePage;
+export default AddListingPage;
