@@ -6,12 +6,13 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import PersonalPage from './pages/PersonalPage';
 import MyListingsPage from './pages/MyListingsPage';
+import AddListingsPage from './pages/AddListingPage';
 import HousePage from './pages/HousePage';
 import SearchResultsPage from './pages/SearchResultsPage';
 import AboutUs from './pages/AboutUs';
 import FeedbackForm from './pages/FeedbackForm';
 import PrivateRoute from './utils/PrivateRoute';
-import ViewTracker from './utils/PageTracker';
+import ViewTracker from './utils/ViewTracker';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<PersonalPage />} />
               <Route path="/my-listings" element={<MyListingsPage />} />
+              <Route path="/add-listing" element={<AddListingsPage />} />
             </Route>
           </Routes>
         </main>
