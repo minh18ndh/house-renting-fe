@@ -4,6 +4,7 @@ import Button from '../components/Button';
 import { getMeApi } from '../apis/authApi';
 import { getAllPosts, deletePost } from '../apis/postApi';
 import { STATIC_URL } from '../apis/apiFetch';
+import { format } from 'date-fns';
 
 const MyListingsPage = () => {
   const [listings, setListings] = useState([]);
@@ -54,7 +55,9 @@ const MyListingsPage = () => {
     <div className="container mx-auto px-4 py-12">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-text-main">My Listings</h1>
+          <h1 className="text-3xl font-bold text-text-main">
+            {user?.role === 'Admin' ? 'All Listings' : 'My Listings'}
+          </h1>
           <p className="text-text-muted mt-1">
             {user?.role === 'Admin' ? 'All properties across the platform' : 'Manage your property listings'}
           </p>
@@ -105,7 +108,7 @@ const MyListingsPage = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-text-muted">
-                    {listing.uploadDate}
+                    {listing.uploadDate ? format(new Date(listing.uploadDate), 'MMM do yyyy') : '—'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-main">
                     ${listing.price.toLocaleString()}/mo
