@@ -86,7 +86,7 @@ const MyListingsPage = () => {
                         />
                         <div>
                           <div className="text-sm font-medium text-text-main">{listing.address}</div>
-                          <div className="text-sm text-text-muted">{listing.type} • {listing.bedrooms} bed • {listing.bathrooms} bath</div>
+                          <div className="text-sm text-text-muted">{listing.type} • {listing.bedroom} bed • {listing.bathrooms} bath</div>
                         </div>
                       </div>
                     </td>

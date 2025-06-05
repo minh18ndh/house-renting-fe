@@ -4,126 +4,110 @@ import HouseCard from '../components/HouseCard';
 import SearchFilters from '../components/SearchFilters';
 import MapComponent from '../components/MapComponent';
 import Button from '../components/Button';
-import { mockHouses, priceRanges } from '../data/houses';
+import { getAllPosts } from '../apis/postApi';
 
 const SearchResultsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [filteredHouses, setFilteredHouses] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [selectedHouse, setSelectedHouse] = useState(null);
   const [sortBy, setSortBy] = useState('price-low');
-  const featuredHouses = mockHouses.filter(house => house.available).slice(0, 6);
 
   const [filters, setFilters] = useState({
     location: searchParams.get('location') || '',
-    keywords: searchParams.get('keywords') || '',
-    propertyType: 'All Types',
-    priceRange: '0',
-    bedrooms: '',
-    bathrooms: ''
+    categoryId: searchParams.get('categoryId') || '',
+    priceRange: searchParams.get('priceRange') || '',
+    bedroom: searchParams.get('bedroom') || '',
   });
 
+  // Auto-fetch on filter change
   useEffect(() => {
-    filterHouses();
+    const fetchFilteredPosts = async () => {
+      try {
+        const data = await getAllPosts({
+          ...(filters.categoryId && { categoryId: filters.categoryId }),
+          ...(filters.location && { location: filters.location }),
+          ...(filters.priceRange && { priceRange: filters.priceRange }),
+          ...(filters.bedroom && { bedroom: filters.bedroom }),
+        });
+
+        if (sortBy === 'price-low') {
+          data.sort((a, b) => a.price - b.price);
+        } else if (sortBy === 'price-high') {
+          data.sort((a, b) => b.price - a.price);
+        }
+
+        setPosts(data);
+      } catch (err) {
+        console.error('Failed to fetch posts:', err);
+      }
+    };
+
+    fetchFilteredPosts();
+
+    // Update searchParams in URL
+    const params = new URLSearchParams();
+    if (filters.categoryId) params.set('categoryId', filters.categoryId);
+    if (filters.location) params.set('location', filters.location);
+    if (filters.priceRange) params.set('priceRange', filters.priceRange);
+    if (filters.bedroom) params.set('bedroom', filters.bedroom);
+    setSearchParams(params);
   }, [filters, sortBy]);
-
-  const filterHouses = () => {
-    let filtered = mockHouses.filter(house => house.available);
-
-    // Property type filter
-    if (filters.propertyType && filters.propertyType !== 'All Types') {
-      filtered = filtered.filter(house => house.type === filters.propertyType);
-    }
-
-    // Price range filter
-    if (filters.priceRange !== '0') {
-      const range = priceRanges[parseInt(filters.priceRange)];
-      filtered = filtered.filter(house =>
-        house.price >= range.min && house.price <= range.max
-      );
-    }
-
-    // Bedrooms filter
-    if (filters.bedrooms) {
-      filtered = filtered.filter(house => house.bedrooms >= parseInt(filters.bedrooms));
-    }
-
-    setFilteredHouses(filtered);
-  };
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
-
-    // Update URL params
-    const params = new URLSearchParams();
-    if (newFilters.location) params.set('location', newFilters.location);
-    if (newFilters.keywords) params.set('keywords', newFilters.keywords);
-    setSearchParams(params);
   };
 
   const handleReset = () => {
     const resetFilters = {
+      categoryId: '',
       location: '',
-      keywords: '',
-      propertyType: 'All Types',
-      priceRange: '0',
-      bedrooms: '',
-      bathrooms: ''
+      priceRange: '',
+      bedroom: '',
     };
     setFilters(resetFilters);
     setSearchParams({});
   };
 
-  const handleHouseSelect = (house) => {
-    setSelectedHouse(house);
-  };
-
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 xl:px-20 2xl:px-32 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-main mb-2">Search Results</h1>
-        <p className="text-text-muted">
-          Found {filteredHouses.length} properties
-          {filters.location && ` in ${filters.location}`}
-          {filters.keywords && ` matching "${filters.keywords}"`}
+        <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main mb-2">Search Results</h1>
+        <p className="text-sm md:text-base text-text-muted">
+          Found {posts.length} properties
         </p>
       </div>
 
-      <SearchFilters
-        filters={filters}
-        onFilterChange={handleFilterChange}
-        onSearch={filterHouses}
-        onReset={handleReset}
-      />
+      <div className="mb-8">
+        <SearchFilters
+          filters={filters}
+          onFilterChange={handleFilterChange}
+          onReset={handleReset}
+        />
+      </div>
 
-      {/* Map Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="lg:col-span-2">
-          <MapComponent
-            houses={featuredHouses}
-            onHouseSelect={handleHouseSelect}
-            selectedHouse={selectedHouse}
-            height="500px"
-          />
-        </div>
+      <section className="py-12 bg-gray-50 rounded-lg">
+        <MapComponent
+          houses={posts}
+          onHouseSelect={setSelectedHouse}
+          selectedHouse={selectedHouse}
+          height="500px"
+        />
       </section>
 
-      {filteredHouses.length === 0 ? (
+      {posts.length === 0 ? (
         <div className="text-center py-16">
           <div className="text-6xl mb-4">🏠</div>
-          <h3 className="text-xl font-semibold text-text-main mb-2">No properties found</h3>
-          <p className="text-text-muted mb-6">Try adjusting your search criteria or browse all available properties.</p>
+          <h3 className="text-lg md:text-xl font-semibold text-text-main mb-2">No properties found</h3>
+          <p className="text-sm md:text-base text-text-muted mb-6">Try adjusting your search criteria or browse all available properties.</p>
           <Button onClick={handleReset} variant="primary">
             Reset Filters
           </Button>
         </div>
       ) : (
-        <div className="mt-8">
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredHouses.map(house => (
-              <HouseCard key={house.id} house={house} />
-            ))}
-          </div>
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map(house => (
+            <HouseCard key={house.id} house={house} />
+          ))}
         </div>
       )}
     </div>

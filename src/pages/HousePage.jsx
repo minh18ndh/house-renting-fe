@@ -76,6 +76,17 @@ const HousePage = () => {
 
   return (
     <div className="container mx-auto px-4 md:px-8 lg:px-16 py-8">
+      {/* Breadcrumb */}
+      <nav className="mb-6">
+        <ol className="flex items-center space-x-2 text-sm text-text-muted">
+          <li><Link to="/" className="hover:text-primary">Home</Link></li>
+          <li>/</li>
+          <li><Link to="/search" className="hover:text-primary">Search</Link></li>
+          <li>/</li>
+          <li className="text-text-main">{house.address}</li>
+        </ol>
+      </nav>
+      
       {/* Image Gallery */}
       <div className="mb-8 relative">
         <img
@@ -106,7 +117,7 @@ const HousePage = () => {
         <div className="lg:col-span-2 space-y-8">
           {/* Header */}
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main">{house.content}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main">{house.address}</h1>
             <p className="text-sm md:text-base lg:text-lg text-text-muted">{house.category?.name}</p>
             <p className="text-primary font-bold text-lg md:text-xl mt-2">${house.price.toLocaleString()} / month</p>
           </div>
@@ -188,7 +199,7 @@ const HousePage = () => {
           </div>
 
           <div className="bg-white p-4 md:p-6 rounded-xl shadow mt-4">
-            <MapComponent location={house.location} title={house.content} />
+            <MapComponent location={house.location} title={house.address} />
           </div>
         </div>
 

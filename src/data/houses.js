@@ -1,209 +1,198 @@
 export const mockHouses = [
-    {
-      id: 1,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Living+Room',
-        '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Kitchen',
-        '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Bedroom',
-        '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Pool'
-      ],
-      price: 3500,
-      address: '123 Sunshine Ave',
-      city: 'Miami, FL',
-      state: 'Florida',
-      zipCode: '33101',
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 2800,
-      type: 'Villa',
-      description: 'A beautiful and spacious villa in a prime Miami location. Features a large living area, modern kitchen, and a stunning backyard with a pool. Perfect for families or those who love to entertain. This luxury property offers breathtaking ocean views and is just minutes from the beach.',
-      amenities: ['Swimming Pool', 'Garage Parking', 'Central AC', 'Pet Friendly', 'Ocean View', 'Balcony', 'Fireplace'],
-      ownerContact: 'owner1@example.com',
-      coordinates: [25.7617, -80.1918],
-      available: true,
-      datePosted: '2024-01-15'
-    },
-    {
-      id: 2,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Main+Area',
-        '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Bedroom',
-        '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Kitchen',
-        '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Balcony'
-      ],
-      price: 1800,
-      address: '456 Oak St',
-      city: 'Austin, TX',
-      state: 'Texas',
-      zipCode: '73301',
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 1200,
-      type: 'Apartment',
-      description: 'Charming and cozy apartment in the heart of Austin. Recently renovated with hardwood floors and stainless steel appliances. Walking distance to shops, restaurants, and entertainment venues. Perfect for young professionals or couples.',
-      amenities: ['Hardwood Floors', 'Stainless Steel Appliances', 'Washer/Dryer In Unit', 'Walk-in Closet', 'Balcony', 'Gym Access'],
-      ownerContact: 'owner2@example.com',
-      coordinates: [30.2672, -97.7431],
-      available: true,
-      datePosted: '2024-01-20'
-    },
-    {
-      id: 3,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Exterior',
-        '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Living',
-        '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Kitchen',
-        '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Bedroom'
-      ],
-      price: 2200,
-      address: '789 Pine Ln',
-      city: 'Denver, CO',
-      state: 'Colorado',
-      zipCode: '80201',
-      bedrooms: 3,
-      bathrooms: 2.5,
-      area: 1800,
-      type: 'Townhouse',
-      description: 'Modern townhouse with stunning mountain views and contemporary design. Features an open floor plan, updated kitchen with granite countertops, and a private patio. Located in a quiet neighborhood with easy access to hiking trails and downtown Denver.',
-      amenities: ['Mountain View', 'Fireplace', 'Garage', 'Patio', 'Updated Kitchen', 'Open Floor Plan', 'Storage'],
-      ownerContact: 'owner3@example.com',
-      coordinates: [39.7392, -104.9903],
-      available: true,
-      datePosted: '2024-01-25'
-    },
-    {
-      id: 4,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Main',
-        '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Kitchen',
-        '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Bedroom',
-        '/placeholder.svg?width=800&height=500&text=Downtown+Loft+View'
-      ],
-      price: 2800,
-      address: '101 Main Blvd',
-      city: 'San Francisco, CA',
-      state: 'California',
-      zipCode: '94102',
-      bedrooms: 1,
-      bathrooms: 1,
-      area: 900,
-      type: 'Loft',
-      description: 'Stylish downtown loft with exposed brick walls and high ceilings. Features modern amenities and stunning city views. Perfect for urban professionals who want to be in the heart of the action. Walking distance to public transportation, restaurants, and cultural attractions.',
-      amenities: ['City View', 'Exposed Brick', 'High Ceilings', 'Modern Kitchen', 'Hardwood Floors', 'Elevator', 'Concierge'],
-      ownerContact: 'owner4@example.com',
-      coordinates: [37.7749, -122.4194],
-      available: true,
-      datePosted: '2024-02-01'
-    },
-    {
-      id: 5,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Suburban+House+Front',
-        '/placeholder.svg?width=800&height=500&text=Suburban+House+Living',
-        '/placeholder.svg?width=800&height=500&text=Suburban+House+Kitchen',
-        '/placeholder.svg?width=800&height=500&text=Suburban+House+Backyard'
-      ],
-      price: 2500,
-      address: '555 Maple Drive',
-      city: 'Phoenix, AZ',
-      state: 'Arizona',
-      zipCode: '85001',
-      bedrooms: 4,
-      bathrooms: 3,
-      area: 2200,
-      type: 'House',
-      description: 'Spacious family home in a quiet suburban neighborhood. Features a large backyard, updated kitchen, and plenty of storage space. Great schools nearby and family-friendly community. Perfect for families looking for comfort and convenience.',
-      amenities: ['Large Backyard', 'Updated Kitchen', 'Storage Space', 'Garage', 'Central AC', 'Dishwasher', 'Laundry Room'],
-      ownerContact: 'owner5@example.com',
-      coordinates: [33.4484, -112.0740],
-      available: true,
-      datePosted: '2024-02-05'
-    },
-    {
-      id: 6,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+View',
-        '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Living',
-        '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Bedroom',
-        '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Balcony'
-      ],
-      price: 4200,
-      address: '888 Ocean Drive',
-      city: 'San Diego, CA',
-      state: 'California',
-      zipCode: '92101',
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 1400,
-      type: 'Condo',
-      description: 'Stunning beachfront condominium with panoramic ocean views. Features floor-to-ceiling windows, modern finishes, and a private balcony. Resort-style amenities including pool, spa, and fitness center. Wake up to the sound of waves every morning.',
-      amenities: ['Ocean View', 'Balcony', 'Pool', 'Spa', 'Fitness Center', 'Concierge', 'Valet Parking', 'Beach Access'],
-      ownerContact: 'owner6@example.com',
-      coordinates: [32.7157, -117.1611],
-      available: true,
-      datePosted: '2024-02-10'
-    },
-    {
-      id: 101,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Pine+Lane+House+Front',
-        '/placeholder.svg?width=800&height=500&text=Pine+Lane+House+Interior'
-      ],
-      price: 2200,
-      address: '789 Pine Ln',
-      city: 'Denver, CO',
-      state: 'Colorado',
-      zipCode: '80201',
-      bedrooms: 3,
-      bathrooms: 2.5,
-      area: 1800,
-      type: 'Townhouse',
-      description: 'Modern townhouse with mountain views and contemporary design.',
-      amenities: ['Mountain View', 'Fireplace', 'Garage'],
-      ownerContact: 'owner3@example.com',
-      coordinates: [39.7392, -104.9903],
-      available: true,
-      datePosted: '2024-01-25'
-    },
-    {
-      id: 102,
-      images: [
-        '/placeholder.svg?width=800&height=500&text=Maple+Drive+House+Front',
-        '/placeholder.svg?width=800&height=500&text=Maple+Drive+House+Interior'
-      ],
-      price: 1950,
-      address: '321 Maple Dr',
-      city: 'Denver, CO',
-      state: 'Colorado',
-      zipCode: '80202',
-      bedrooms: 2,
-      bathrooms: 2,
-      area: 1400,
-      type: 'House',
-      description: 'Cozy home in quiet neighborhood with updated features.',
-      amenities: ['Quiet Street', 'Garden', 'Updated Kitchen'],
-      ownerContact: 'owner4@example.com',
-      coordinates: [39.7392, -104.9903],
-      available: false,
-      datePosted: '2024-01-18'
-    }
-  ];
-  
-  export const priceRanges = [
-    { label: 'Any Price', min: 0, max: Infinity },
-    { label: 'Under $1,500', min: 0, max: 1500 },
-    { label: '$1,500 - $2,500', min: 1500, max: 2500 },
-    { label: '$2,500 - $3,500', min: 2500, max: 3500 },
-    { label: '$3,500 - $5,000', min: 3500, max: 5000 },
-    { label: 'Over $5,000', min: 5000, max: Infinity }
-  ];
-  
-  export const propertyTypes = [
-    'All Types',
-    'Apartment',
-    'House',
-    'Condo',
-    'Townhouse',
-    'Villa',
-    'Loft'
-  ];
+  {
+    id: 1,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Living+Room',
+      '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Kitchen',
+      '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Bedroom',
+      '/placeholder.svg?width=800&height=500&text=Luxury+Villa+Pool'
+    ],
+    price: 3500,
+    address: '123 Sunshine Ave',
+    city: 'Miami, FL',
+    state: 'Florida',
+    zipCode: '33101',
+    bedrooms: 4,
+    bathrooms: 3,
+    area: 2800,
+    type: 'Villa',
+    description: 'A beautiful and spacious villa in a prime Miami location. Features a large living area, modern kitchen, and a stunning backyard with a pool. Perfect for families or those who love to entertain. This luxury property offers breathtaking ocean views and is just minutes from the beach.',
+    amenities: ['Swimming Pool', 'Garage Parking', 'Central AC', 'Pet Friendly', 'Ocean View', 'Balcony', 'Fireplace'],
+    ownerContact: 'owner1@example.com',
+    coordinates: [25.7617, -80.1918],
+    available: true,
+    datePosted: '2024-01-15'
+  },
+  {
+    id: 2,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Main+Area',
+      '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Bedroom',
+      '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Kitchen',
+      '/placeholder.svg?width=800&height=500&text=Cozy+Apartment+Balcony'
+    ],
+    price: 1800,
+    address: '456 Oak St',
+    city: 'Austin, TX',
+    state: 'Texas',
+    zipCode: '73301',
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 1200,
+    type: 'Apartment',
+    description: 'Charming and cozy apartment in the heart of Austin. Recently renovated with hardwood floors and stainless steel appliances. Walking distance to shops, restaurants, and entertainment venues. Perfect for young professionals or couples.',
+    amenities: ['Hardwood Floors', 'Stainless Steel Appliances', 'Washer/Dryer In Unit', 'Walk-in Closet', 'Balcony', 'Gym Access'],
+    ownerContact: 'owner2@example.com',
+    coordinates: [30.2672, -97.7431],
+    available: true,
+    datePosted: '2024-01-20'
+  },
+  {
+    id: 3,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Exterior',
+      '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Living',
+      '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Kitchen',
+      '/placeholder.svg?width=800&height=500&text=Modern+Townhouse+Bedroom'
+    ],
+    price: 2200,
+    address: '789 Pine Ln',
+    city: 'Denver, CO',
+    state: 'Colorado',
+    zipCode: '80201',
+    bedrooms: 3,
+    bathrooms: 2.5,
+    area: 1800,
+    type: 'Townhouse',
+    description: 'Modern townhouse with stunning mountain views and contemporary design. Features an open floor plan, updated kitchen with granite countertops, and a private patio. Located in a quiet neighborhood with easy access to hiking trails and downtown Denver.',
+    amenities: ['Mountain View', 'Fireplace', 'Garage', 'Patio', 'Updated Kitchen', 'Open Floor Plan', 'Storage'],
+    ownerContact: 'owner3@example.com',
+    coordinates: [39.7392, -104.9903],
+    available: true,
+    datePosted: '2024-01-25'
+  },
+  {
+    id: 4,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Main',
+      '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Kitchen',
+      '/placeholder.svg?width=800&height=500&text=Downtown+Loft+Bedroom',
+      '/placeholder.svg?width=800&height=500&text=Downtown+Loft+View'
+    ],
+    price: 2800,
+    address: '101 Main Blvd',
+    city: 'San Francisco, CA',
+    state: 'California',
+    zipCode: '94102',
+    bedrooms: 1,
+    bathrooms: 1,
+    area: 900,
+    type: 'Loft',
+    description: 'Stylish downtown loft with exposed brick walls and high ceilings. Features modern amenities and stunning city views. Perfect for urban professionals who want to be in the heart of the action. Walking distance to public transportation, restaurants, and cultural attractions.',
+    amenities: ['City View', 'Exposed Brick', 'High Ceilings', 'Modern Kitchen', 'Hardwood Floors', 'Elevator', 'Concierge'],
+    ownerContact: 'owner4@example.com',
+    coordinates: [37.7749, -122.4194],
+    available: true,
+    datePosted: '2024-02-01'
+  },
+  {
+    id: 5,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Suburban+House+Front',
+      '/placeholder.svg?width=800&height=500&text=Suburban+House+Living',
+      '/placeholder.svg?width=800&height=500&text=Suburban+House+Kitchen',
+      '/placeholder.svg?width=800&height=500&text=Suburban+House+Backyard'
+    ],
+    price: 2500,
+    address: '555 Maple Drive',
+    city: 'Phoenix, AZ',
+    state: 'Arizona',
+    zipCode: '85001',
+    bedrooms: 4,
+    bathrooms: 3,
+    area: 2200,
+    type: 'House',
+    description: 'Spacious family home in a quiet suburban neighborhood. Features a large backyard, updated kitchen, and plenty of storage space. Great schools nearby and family-friendly community. Perfect for families looking for comfort and convenience.',
+    amenities: ['Large Backyard', 'Updated Kitchen', 'Storage Space', 'Garage', 'Central AC', 'Dishwasher', 'Laundry Room'],
+    ownerContact: 'owner5@example.com',
+    coordinates: [33.4484, -112.0740],
+    available: true,
+    datePosted: '2024-02-05'
+  },
+  {
+    id: 6,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+View',
+      '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Living',
+      '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Bedroom',
+      '/placeholder.svg?width=800&height=500&text=Beachfront+Condo+Balcony'
+    ],
+    price: 4200,
+    address: '888 Ocean Drive',
+    city: 'San Diego, CA',
+    state: 'California',
+    zipCode: '92101',
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 1400,
+    type: 'Condo',
+    description: 'Stunning beachfront condominium with panoramic ocean views. Features floor-to-ceiling windows, modern finishes, and a private balcony. Resort-style amenities including pool, spa, and fitness center. Wake up to the sound of waves every morning.',
+    amenities: ['Ocean View', 'Balcony', 'Pool', 'Spa', 'Fitness Center', 'Concierge', 'Valet Parking', 'Beach Access'],
+    ownerContact: 'owner6@example.com',
+    coordinates: [32.7157, -117.1611],
+    available: true,
+    datePosted: '2024-02-10'
+  },
+  {
+    id: 101,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Pine+Lane+House+Front',
+      '/placeholder.svg?width=800&height=500&text=Pine+Lane+House+Interior'
+    ],
+    price: 2200,
+    address: '789 Pine Ln',
+    city: 'Denver, CO',
+    state: 'Colorado',
+    zipCode: '80201',
+    bedrooms: 3,
+    bathrooms: 2.5,
+    area: 1800,
+    type: 'Townhouse',
+    description: 'Modern townhouse with mountain views and contemporary design.',
+    amenities: ['Mountain View', 'Fireplace', 'Garage'],
+    ownerContact: 'owner3@example.com',
+    coordinates: [39.7392, -104.9903],
+    available: true,
+    datePosted: '2024-01-25'
+  },
+  {
+    id: 102,
+    images: [
+      '/placeholder.svg?width=800&height=500&text=Maple+Drive+House+Front',
+      '/placeholder.svg?width=800&height=500&text=Maple+Drive+House+Interior'
+    ],
+    price: 1950,
+    address: '321 Maple Dr',
+    city: 'Denver, CO',
+    state: 'Colorado',
+    zipCode: '80202',
+    bedrooms: 2,
+    bathrooms: 2,
+    area: 1400,
+    type: 'House',
+    description: 'Cozy home in quiet neighborhood with updated features.',
+    amenities: ['Quiet Street', 'Garden', 'Updated Kitchen'],
+    ownerContact: 'owner4@example.com',
+    coordinates: [39.7392, -104.9903],
+    available: false,
+    datePosted: '2024-01-18'
+  }
+];
+
+export const priceRanges = [
+  { value: '0-200', label: '$0 - $200' },
+  { value: '200-500', label: '$200 - $500' },
+  { value: '500-1000', label: '$500 - $1000' },
+  { value: '1000-2000', label: '$1000 - $2000' },
+  { value: '2000+', label: '$2000+' },
+];
