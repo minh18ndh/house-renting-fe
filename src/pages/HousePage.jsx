@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Button from '../components/Button';
-import { getPostById } from '../apis/postApi';
+import { getPostById, updatePost } from '../apis/postApi';
 import { createComment } from '../apis/commentApi';
 import { useAuth } from '../hooks/useAuth';
 import { STATIC_URL } from '../apis/apiFetch';
 import MapComponent from '../components/MapComponent';
+import MapPicker from '../components/MapPicker';
 
 const StarRating = ({ rating, setRating }) => (
   <div className="flex space-x-1">
@@ -30,12 +31,28 @@ const HousePage = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
+  const [editMode, setEditMode] = useState(false);
+
+  const [address, setAddress] = useState('');
+  const [isRented, setIsRented] = useState(false);
+  const [bedroom, setBedroom] = useState(1);
+  const [area, setArea] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [content, setContent] = useState('');
+  const [location, setLocation] = useState('');
 
   useEffect(() => {
     const fetchPost = async () => {
       try {
         const data = await getPostById(id);
         setHouse(data);
+        setAddress(data.address);
+        setIsRented(data.isRented);
+        setBedroom(data.bedroom);
+        setArea(data.area);
+        setPrice(data.price);
+        setContent(data.content);
+        setLocation(data.location);
       } catch (err) {
         console.error('Failed to fetch post:', err);
       } finally {
@@ -44,6 +61,22 @@ const HousePage = () => {
     };
     fetchPost();
   }, [id]);
+
+  const canEdit = user?.role === 'Admin' || user?.id === house?.userId;
+
+  const handleSave = async () => {
+    try {
+      await updatePost(house.id, {
+        address, isRented, bedroom: Number(bedroom), area: Number(area), price: Number(price), content, location
+      });
+
+      const updated = await getPostById(house.id);
+      setHouse(updated);
+      setEditMode(false);
+    } catch (err) {
+      console.error('Failed to update post:', err);
+    }
+  };
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
@@ -86,76 +119,117 @@ const HousePage = () => {
           <li className="text-text-main">{house.address}</li>
         </ol>
       </nav>
-      
+
       {/* Image Gallery */}
-      <div className="mb-8 relative">
+      <div className="mb-6 relative">
         <img
-          src={`${STATIC_URL}/${house.images[currentImageIndex]?.baseUrl}`}
+          src={house.images?.[0]?.baseUrl ? `${STATIC_URL}/${house.images[currentImageIndex].baseUrl}` : '/placeholder.svg'}
           alt="Property"
-          className="w-full h-[250px] md:h-[400px] lg:h-[600px] object-cover rounded-xl shadow-2xl"
+          className="w-full h-[300px] md:h-[500px] object-cover rounded-xl shadow-lg"
         />
         {house.images.length > 1 && (
           <>
-            <button
-              onClick={() => setCurrentImageIndex((currentImageIndex - 1 + house.images.length) % house.images.length)}
-              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-            >
-              ←
-            </button>
-            <button
-              onClick={() => setCurrentImageIndex((currentImageIndex + 1) % house.images.length)}
-              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full"
-            >
-              →
-            </button>
+            <button onClick={() => setCurrentImageIndex((currentImageIndex - 1 + house.images.length) % house.images.length)}
+              className="absolute top-1/2 left-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">←</button>
+            <button onClick={() => setCurrentImageIndex((currentImageIndex + 1) % house.images.length)}
+              className="absolute top-1/2 right-4 transform -translate-y-1/2 bg-black/50 text-white p-3 rounded-full">→</button>
           </>
         )}
       </div>
+
+      {canEdit && (
+        <div className="flex justify-end gap-3 mb-4">
+          {editMode ? (
+            <>
+              <Button onClick={handleSave} variant="primary">Save</Button>
+              <Button onClick={() => setEditMode(false)} variant="outline">Cancel</Button>
+            </>
+          ) : (
+            <Button onClick={() => setEditMode(true)} variant="outline">Edit Post</Button>
+          )}
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main */}
         <div className="lg:col-span-2 space-y-8">
           {/* Header */}
           <div>
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-text-main">{house.address}</h1>
-            <p className="text-sm md:text-base lg:text-lg text-text-muted">{house.category?.name}</p>
-            <p className="text-primary font-bold text-lg md:text-xl mt-2">${house.price.toLocaleString()} / month</p>
+            {editMode ? (
+              <input
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                className="w-full text-xl font-bold border border-border rounded-md px-3 py-2"
+              />
+            ) : (
+              <h1 className="text-2xl font-bold text-text-main">{house.address}</h1>
+            )}
+            <p className="text-sm text-text-muted">{house.category?.name}</p>
+            {editMode ? (
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                type="number"
+                className="text-primary font-bold text-lg mt-2 border border-border rounded-md px-3 py-2"
+              />
+            ) : (
+              <p className="text-primary font-bold text-lg mt-2">${house.price.toLocaleString()} / month</p>
+            )}
           </div>
 
           {/* Property Specs */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div className="text-center">
-              <p className="text-xl font-bold">{house.bedroom}</p>
+              {editMode ? (
+                <input type="number" value={bedroom} onChange={(e) => setBedroom(e.target.value)} className="text-center border border-border rounded-md px-2 py-1" />
+              ) : (
+                <p className="text-xl font-bold">{house.bedroom}</p>
+              )}
               <p className="text-text-muted text-sm">Bedrooms</p>
             </div>
             <div className="text-center">
-              <p className="text-xl font-bold">{house.area}</p>
+              {editMode ? (
+                <input type="number" value={area} onChange={(e) => setArea(e.target.value)} className="text-center border border-border rounded-md px-2 py-1" />
+              ) : (
+                <p className="text-xl font-bold">{house.area}</p>
+              )}
               <p className="text-text-muted text-sm">Area (m²)</p>
             </div>
             <div className="text-center col-span-2 md:col-span-1">
-              <p className={`text-xl font-bold ${house.isRented ? 'text-red-500' : 'text-green-600'}`}>
-                {house.isRented ? 'Rented' : 'Available'}
-              </p>
+              {editMode ? (
+                <select value={isRented} onChange={(e) => setIsRented(e.target.value === 'true')} className="text-center border border-border rounded-md px-2 py-1">
+                  <option value="false">Available</option>
+                  <option value="true">Rented</option>
+                </select>
+              ) : (
+                <p className={`text-xl font-bold ${house.isRented ? 'text-red-500' : 'text-green-600'}`}>
+                  {house.isRented ? 'Rented' : 'Available'}
+                </p>
+              )}
               <p className="text-text-muted text-sm">Status</p>
             </div>
           </div>
 
           {/* Description */}
           <div>
-            <h2 className="text-xl md:text-2xl font-semibold text-text-main mb-4">Description</h2>
-            <p className="text-text-muted leading-relaxed">{house.content}</p>
+            <h2 className="text-xl font-semibold text-text-main mb-4">Description</h2>
+            {editMode ? (
+              <textarea
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="w-full border border-border rounded-md p-2"
+              />
+            ) : (
+              <p className="text-text-muted leading-relaxed">{house.content}</p>
+            )}
           </div>
-
+          
           {/* Comments */}
           <div className="bg-white p-4 md:p-6 rounded-xl shadow">
-            <h2 className="text-xl md:text-2xl font-semibold mb-4 text-text-main">Comments & Ratings</h2>
-
+            <h2 className="text-xl font-semibold mb-4 text-text-main">Comments & Ratings</h2>
             {user && (
               <form onSubmit={handleCommentSubmit} className="space-y-4 mb-8">
-                <div>
-                  <label className="block text-sm font-medium text-text-muted mb-1">Your Rating</label>
-                  <StarRating rating={rating} setRating={setRating} />
-                </div>
+                <StarRating rating={rating} setRating={setRating} />
                 <textarea
                   rows={3}
                   className="w-full border border-border rounded-md p-2"
@@ -164,42 +238,36 @@ const HousePage = () => {
                   onChange={(e) => setComment(e.target.value)}
                   required
                 />
-                <Button
-                  type="submit"
-                  variant="primary"
-                  disabled={rating < 1 || comment.trim().length === 0}
-                >
+                <Button type="submit" variant="primary" disabled={rating < 1 || comment.trim().length === 0}>
                   Submit
                 </Button>
               </form>
             )}
-
-            {house.comments.length === 0 ? (
-              <p className="text-text-muted">No comments yet.</p>
-            ) : (
-              <div className="space-y-4">
-                {house.comments.map((c, i) => (
-                  <div key={i} className="border-t pt-4">
-                    <p className="font-medium text-text-main">{c.user.fullName}</p>
-                    <p className="text-yellow-500 text-sm">{"★".repeat(c.rating)}{"☆".repeat(5 - c.rating)}</p>
-                    <p className="text-text-muted">{c.content}</p>
-                  </div>
-                ))}
+            {house.comments.map((c, i) => (
+              <div key={i} className="border-t pt-4">
+                <p className="font-medium text-text-main">{c.user.fullName}</p>
+                <p className="text-yellow-500 text-sm">{"★".repeat(c.rating)}{"☆".repeat(5 - c.rating)}</p>
+                <p className="text-text-muted">{c.content}</p>
               </div>
-            )}
+            ))}
           </div>
+          
         </div>
 
         {/* Sidebar */}
         <div>
           <div className="bg-white p-4 md:p-6 rounded-xl shadow">
-            <h3 className="text-lg md:text-xl font-semibold text-text-main mb-2">Contact Owner</h3>
+            <h3 className="text-lg font-semibold text-text-main mb-2">Contact Owner</h3>
             <p className="text-sm text-text-muted mb-4">Reach out to the property owner directly for inquiries.</p>
             <Button variant="outline" className="w-full">Call: {house.user.phone}</Button>
           </div>
 
           <div className="bg-white p-4 md:p-6 rounded-xl shadow mt-4">
-            <MapComponent location={house.location} title={house.address} />
+            {editMode ? (
+              <MapPicker value={location} onChange={setLocation} />
+            ) : (
+              <MapComponent location={house.location} title={house.address} />
+            )}
           </div>
         </div>
 

@@ -83,62 +83,102 @@ const MyListingsPage = () => {
           </Button>
         </div>
       ) : (
-        <div className="hidden lg:block bg-white shadow-lg rounded-lg overflow-hidden">
-          <table className="min-w-full divide-y divide-border">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Property</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Upload Date</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Price</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-border">
-              {listings.map((listing) => (
-                <tr key={listing.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <img
-                        src={listing.images?.[0]?.baseUrl ? `${STATIC_URL}/${listing.images[0]?.baseUrl}` : '/placeholder.svg'}
-                        alt={listing.address || 'Property'}
-                        className="w-16 h-12 object-cover rounded-lg mr-4"
-                      />
-                      <div className="text-sm font-medium text-text-main">{listing.address || 'No title'}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-text-muted">
-                    {listing.uploadDate ? format(new Date(listing.uploadDate), 'MMM do yyyy') : '—'}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-main">
-                    ${listing.price.toLocaleString()}/mo
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div
-                      className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${!listing.isRented
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                        }`}
-                    >
-                      {listing.isRented ? 'Rented' : 'Available'}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
-                    <Link to={`/house/${listing.id}`} className="text-primary hover:text-opacity-80">
-                      Edit
-                    </Link>
-                    <button
-                      onClick={() => handleDeleteListing(listing.id)}
-                      className="text-red-600 hover:text-red-800"
-                    >
-                      Delete
-                    </button>
-                  </td>
+        <>
+          {/* Mobile / Tablet View */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:hidden">
+            {listings.map((listing) => (
+              <div key={listing.id} className="bg-white rounded-lg shadow p-4 flex flex-col">
+                <img
+                  src={listing.images?.[0]?.baseUrl ? `${STATIC_URL}/${listing.images[0].baseUrl}` : '/placeholder.svg'}
+                  alt={listing.address || 'Property'}
+                  className="w-full h-40 object-cover rounded-md mb-3"
+                />
+                <h3 className="text-lg font-semibold text-text-main mb-1">
+                  {listing.address || 'No title'}
+                </h3>
+                <p className="text-sm text-text-muted mb-1">
+                  Uploaded: {listing.uploadDate ? format(new Date(listing.uploadDate), 'MMM do yyyy') : '—'}
+                </p>
+                <p className="text-sm text-text-main font-bold mb-2">
+                  ${listing.price.toLocaleString()}/mo
+                </p>
+                <div
+                  className={`text-xs font-semibold mb-2 w-fit px-3 py-1 rounded-full ${listing.isRented ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'
+                    }`}
+                >
+                  {listing.isRented ? 'Rented' : 'Available'}
+                </div>
+                <div className="flex justify-between text-sm mt-auto pt-3 border-t border-gray-200">
+                  <Link to={`/house/${listing.id}`} className="text-primary hover:underline">
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => handleDeleteListing(listing.id)}
+                    className="text-red-600 hover:underline"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop Table View */}
+          <div className="hidden lg:block bg-white shadow-lg rounded-lg overflow-hidden mt-8">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Property</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Upload Date</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Price</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-text-muted uppercase tracking-wider">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="bg-white divide-y divide-border">
+                {listings.map((listing) => (
+                  <tr key={listing.id} className="hover:bg-gray-50">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <img
+                          src={listing.images?.[0]?.baseUrl ? `${STATIC_URL}/${listing.images[0].baseUrl}` : '/placeholder.svg'}
+                          alt={listing.address || 'Property'}
+                          className="w-16 h-12 object-cover rounded-lg mr-4"
+                        />
+                        <div className="text-sm font-medium text-text-main">{listing.address || 'No title'}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-text-muted">
+                      {listing.uploadDate ? format(new Date(listing.uploadDate), 'MMM do yyyy') : '—'}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-text-main">
+                      ${listing.price.toLocaleString()}/mo
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${!listing.isRented ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                          }`}
+                      >
+                        {listing.isRented ? 'Rented' : 'Available'}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-3">
+                      <Link to={`/house/${listing.id}`} className="text-primary hover:text-opacity-80">
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDeleteListing(listing.id)}
+                        className="text-red-600 hover:text-red-800"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
