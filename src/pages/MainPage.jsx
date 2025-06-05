@@ -11,15 +11,22 @@ import { STATIC_URL } from '../apis/apiFetch';
 const MainPage = () => {
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [featured, setFeatured] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const fetched = await getAllPosts();
-        setPosts(fetched);
-        const shuffled = fetched.sort(() => 0.5 - Math.random());
-        setFeatured(shuffled.slice(0, 4));
+
+        const seen = new Set();
+        const uniqueSortedPosts = fetched
+          .filter((post) => {
+            if (seen.has(post.id)) return false;
+            seen.add(post.id);
+            return true;
+          })
+          .sort((a, b) => a.id - b.id);
+
+        setPosts(uniqueSortedPosts);
       } catch (err) {
         console.error('Failed to fetch posts:', err);
       }
@@ -53,7 +60,7 @@ const MainPage = () => {
         </div>
       </section>
 
-      {/* Featured Section */}
+      {/* Featured Listings Section */}
       <section className="py-12 md:py-16 bg-gray-50">
         <div className="w-full px-4 md:px-8 lg:px-16">
           <h2 className="text-xl md:text-2xl font-semibold text-text-main mb-6">
@@ -64,14 +71,14 @@ const MainPage = () => {
             spaceBetween={20}
             slidesPerView={1}
             loop={true}
-            autoplay={{ delay: 2000 }}
+            autoplay={{ delay: 1000 }}
             breakpoints={{
               0: { slidesPerView: 1 },
               800: { slidesPerView: 2 },
               1200: { slidesPerView: 3 },
             }}
           >
-            {featured.map((house) => (
+            {posts.map((house) => (
               <SwiperSlide key={house.id}>
                 <div
                   onClick={() => navigate(`/house/${house.id}`)}
