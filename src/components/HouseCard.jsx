@@ -3,7 +3,7 @@ import Button from './Button';
 import { STATIC_URL } from '../apis/apiFetch';
 
 const HouseCard = ({ house }) => {
-  const { id, price, address, city, state, bedroom, area, type } = house;
+  const { id, price, address, bedroom, area, type } = house;
 
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl">
@@ -20,14 +20,19 @@ const HouseCard = ({ house }) => {
         </div>
       </Link>
       <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-text-main truncate">{address}</h3>
-            <p className="text-sm text-text-muted">{city}, {state}</p>
+        <div className="flex flex-col gap-2 mb-2">
+          <div>
+            <h3 className="text-lg font-semibold text-text-main">{address}</h3>
           </div>
-          <div className="text-right">
+
+          <div>
             <p className="text-xl font-bold text-primary">${price.toLocaleString()}</p>
             <p className="text-xs text-text-muted">per month</p>
+            {house.distance !== undefined && (
+              <p className="text-sm text-text-muted mt-1">
+                📍 {house.distance.toFixed(1)} km from pinned location
+              </p>
+            )}
           </div>
         </div>
 
@@ -42,7 +47,7 @@ const HouseCard = ({ house }) => {
             <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm0 4a1 1 0 011-1h12a1 1 0 011 1v8a1 1 0 01-1 1H4a1 1 0 01-1-1V8z" clipRule="evenodd" />
             </svg>
-            {area} sqft
+            {area} m²
           </span>
         </div>
 

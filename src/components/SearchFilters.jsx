@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import Button from './Button';
 import { getAllCategories } from '../apis/categoryApi';
 import { priceRanges } from '../data/houses';
+import MapPicker from '../components/MapPicker';
 
 const SearchFilters = ({ filters, onFilterChange, onReset }) => {
   const [categories, setCategories] = useState([]);
-  
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -75,8 +76,12 @@ const SearchFilters = ({ filters, onFilterChange, onReset }) => {
         </div>
 
         {/* Location (Coordinates) */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-3 space-y-2">
           <label className="block text-sm font-medium text-text-muted mb-1">Location (Click on Map to Pin)</label>
+          <MapPicker
+            value={filters.location}
+            onChange={(coord) => handleInputChange('location', coord)}
+          />
           <input
             type="text"
             readOnly
@@ -84,7 +89,7 @@ const SearchFilters = ({ filters, onFilterChange, onReset }) => {
             placeholder="Latitude,Longitude"
             className="w-full px-3 py-2 border border-border rounded-md bg-gray-100 text-gray-600"
           />
-          <p className="text-xs mt-1 text-text-muted">This will update when you click on the map.</p>
+          <p className="text-xs text-text-muted">The coordinate will be used to sort results by distance.</p>
         </div>
       </div>
 

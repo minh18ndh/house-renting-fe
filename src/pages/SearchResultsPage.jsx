@@ -2,15 +2,12 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import HouseCard from '../components/HouseCard';
 import SearchFilters from '../components/SearchFilters';
-import MapComponent from '../components/MapComponent';
 import Button from '../components/Button';
 import { getAllPosts } from '../apis/postApi';
 
 const SearchResultsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [posts, setPosts] = useState([]);
-  const [selectedHouse, setSelectedHouse] = useState(null);
-  const [sortBy, setSortBy] = useState('price-low');
 
   const [filters, setFilters] = useState({
     location: searchParams.get('location') || '',
@@ -30,12 +27,6 @@ const SearchResultsPage = () => {
           ...(filters.bedroom && { bedroom: filters.bedroom }),
         });
 
-        if (sortBy === 'price-low') {
-          data.sort((a, b) => a.price - b.price);
-        } else if (sortBy === 'price-high') {
-          data.sort((a, b) => b.price - a.price);
-        }
-
         setPosts(data);
       } catch (err) {
         console.error('Failed to fetch posts:', err);
@@ -51,7 +42,7 @@ const SearchResultsPage = () => {
     if (filters.priceRange) params.set('priceRange', filters.priceRange);
     if (filters.bedroom) params.set('bedroom', filters.bedroom);
     setSearchParams(params);
-  }, [filters, sortBy]);
+  }, [filters]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -84,15 +75,6 @@ const SearchResultsPage = () => {
           onReset={handleReset}
         />
       </div>
-
-      <section className="py-12 bg-gray-50 rounded-lg">
-        <MapComponent
-          houses={posts}
-          onHouseSelect={setSelectedHouse}
-          selectedHouse={selectedHouse}
-          height="500px"
-        />
-      </section>
 
       {posts.length === 0 ? (
         <div className="text-center py-16">
