@@ -18,7 +18,9 @@ const apiFetch = async (endpoint, { method = 'GET', body, token = getToken() } =
         throw new Error(error.error || 'API Error');
     }
 
-    return res.json();
+    if (res.status === 204) return null; // No Content
+    const text = await res.text();
+    return text ? JSON.parse(text) : null;
 };
 
 export default apiFetch;

@@ -11,10 +11,12 @@ import SearchResultsPage from './pages/SearchResultsPage';
 import AboutUs from './pages/AboutUs';
 import FeedbackForm from './pages/FeedbackForm';
 import PrivateRoute from './utils/PrivateRoute';
+import ViewTracker from './utils/PageTracker';
 
 function App() {
   return (
     <BrowserRouter>
+      <ViewTracker />
       <div className="flex flex-col min-h-screen">
         <Navbar />
         <main className="flex-grow pt-16">
