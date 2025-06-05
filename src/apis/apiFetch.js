@@ -4,7 +4,10 @@ export const STATIC_URL = BASE_URL.replace(/\/api$/, '');
 const getToken = () => localStorage.getItem('rentahouse_token');
 
 const apiFetch = async (endpoint, { method = 'GET', body, token = getToken() } = {}) => {
-    const headers = { 'Content-Type': 'application/json' };
+    const headers = {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+    };
     if (token) headers.Authorization = `Bearer ${token}`;
 
     const res = await fetch(`${BASE_URL}${endpoint}`, {
